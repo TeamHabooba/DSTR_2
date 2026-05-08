@@ -40,7 +40,7 @@ namespace dstr::strings {
   SCSTR MSG_DESC_INTRO = "Project Description";
   SCSTR MSG_DESC = "This is Data Structures (DSTR) assignment of group DSTR32.";
   SCSTR MSG_DESC_MEMBERS = "Group members are:\nTP081705 - Kurapatkin Aliaksandr (Alex) (Leader)\nTP082557 - Leon Frank Aminiel (Leo)\nTP082459 - Mohamed Abdifatah Ali (Moha)";
-  SCSTR MSG_DESC_DOCS = "All the documentation can be found at our GitHub repository: https://github.com/TeamHabooba/DSTR";
+  SCSTR MSG_DESC_DOCS = "All the documentation can be found at our GitHub repository: https://github.com/TeamHabooba/DSTR_2";
   SCSTR MSG_DESC_DOCS_FILES = "Refer to README.md file or `docs` directory.";
   SCSTR MSG_DESC_ROLES_1 = "This project is developed in the three \"subgroups\": General, Array, List.";
   SCSTR MSG_DESC_ROLES_2 = "General (by Alex): `src/common`, `src/files` and `src/cli` directories.";

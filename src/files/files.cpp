@@ -9,7 +9,7 @@
 
 namespace dstr {
 
-
+    /*
   Result<Array<Resident>> load_csv(const string& path) {
     std::ifstream file(path);
     if (!file.is_open()) {
@@ -41,7 +41,7 @@ namespace dstr {
     }
     return Ok(records);
   }
-
+  */
 
   // Expected CSV columns (0-based):
   //   0: ResidentID   1: Age   2: ModeOfTransport

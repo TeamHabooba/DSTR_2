@@ -27,8 +27,6 @@ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 
 # All executables as a list
 set(SOURCES
-  "${SRC_DIR}/list/list.cpp"
-  "${SRC_DIR}/array/array.cpp"
   "${SRC_DIR}/files/files.cpp"
   "${SRC_DIR}/cli/cli.cpp"
 
