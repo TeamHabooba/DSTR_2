@@ -12,8 +12,6 @@ Every team member is expected to read and follow this document before making any
 - [Pull Request Rules](#pull-request-rules)
 - [Code Ownership](#code-ownership)
 - [Meetings](#meetings)
-- [Deadlines](#deadlines)
-- [AI Usage Policy](#ai-usage-policy)
 - [Grading Overview](#grading-overview)
 
 ---
