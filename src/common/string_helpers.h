@@ -2,7 +2,7 @@
 
 
 #include <iostream>
-#include "./aliases.h"
+#include "./aliases/aliases.h"
 #include "./enums.h"
 #include "./resident.h"
 #include "./strings/strings.h"

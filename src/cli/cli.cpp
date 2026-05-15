@@ -47,7 +47,7 @@ namespace dstr {
       else {
         print_header(state.os, string(strings::MSG_MAIN_MENU_INTRO));
       }
-      state.os << strings::MSG_MAIN_MENU_OPTIONS << NL;
+      state.os << NL; //strings::MSG_MAIN_MENU_OPTIONS << NL;
       auto option = get_option(state.is);
       if (!option) {
         return Result(option);

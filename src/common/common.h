@@ -18,7 +18,7 @@
 
 // Project Headers
 #include "./strings/strings.h"
-#include "./aliases.h"
+#include "./aliases/aliases.h"
 #include "./math.h"             // <cmath>
 #include "./enums.h"            // "./aliases.h" <- {<optional>, <memory>, "./strings.h"}
 #include "./string_helpers.h"
