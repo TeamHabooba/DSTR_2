@@ -179,13 +179,24 @@ gone.
 ## A12
 **Return path**
 
-When a robot completes a task, it may return by reversing the path stored in the stack.
+When a robot completes a task, it returns by reversing the path stored in the stack.
 
-The return path is not necessarily recalculated as a new shortest path. It is the reverse
-of the actual path taken to reach the destination.
+Each movement step taken by the robot is pushed onto the stack. During return navigation,
+the robot pops the stack step by step and moves back through the previously visited
+positions.
 
-Justification: This follows the purpose of using a stack for path tracking. It also
-matches the idea of step-by-step reverse navigation.
+Before each return movement, the robot checks whether the next cell is still available.
+If the next cell is free, the robot moves to it. If the next cell is temporarily occupied
+by another robot, the robot waits and retries the same return step later.
+
+This prototype does not implement full real-time multi-robot rerouting during return.
+If a return path becomes permanently unavailable because of a static obstacle or changed
+layout, the situation is reported as a blocked return path.
+
+**Justification:** A stack is suitable for reverse path tracking because it follows
+Last-In-First-Out behaviour. Dynamic robot obstacles are handled by checking the next
+cell before movement, while full real-time multi-robot rerouting is outside the scope of
+this data structures and algorithms prototype.
 
 ## A13
 **Warehouse layout and optional Module 5**
