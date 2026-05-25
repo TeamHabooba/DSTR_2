@@ -141,7 +141,7 @@ In this prototype, the current positions of unavailable or active robots may be 
 as temporarily blocked cells during path generation.
 
 > [!IMPORTANT]
-> At the same time, the system does not implement full real-time multi-robot collision avoidance,
+> The system does not implement full real-time multi-robot collision avoidance,
 > traffic control, deadlock detection, or time-based route reservation.
 
 **Justification:** Treating other robots as temporary obstacles demonstrates awareness of
@@ -189,9 +189,10 @@ Before each return movement, the robot checks whether the next cell is still ava
 If the next cell is free, the robot moves to it. If the next cell is temporarily occupied
 by another robot, the robot waits and retries the same return step later.
 
-This prototype does not implement full real-time multi-robot rerouting during return.
-If a return path becomes permanently unavailable because of a static obstacle or changed
-layout, the situation is reported as a blocked return path.
+> [!IMPORTANT]
+> This prototype does not implement full real-time multi-robot rerouting during return.
+> If a return path becomes permanently unavailable because of a static obstacle or changed
+> layout, the situation is reported as a blocked return path.
 
 **Justification:** A stack is suitable for reverse path tracking because it follows
 Last-In-First-Out behaviour. Dynamic robot obstacles are handled by checking the next
