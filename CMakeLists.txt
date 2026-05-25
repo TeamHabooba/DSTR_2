@@ -21,6 +21,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(json)
 
+add_executable(demo_navigation
+  src/robot_navigation/demo_navigation.cpp
+  src/robot_navigation/movement_step.cpp
+  src/robot_navigation/navigation_log.cpp
+  src/robot_navigation/robot_navigator.cpp
+)
+
+target_include_directories(demo_navigation PRIVATE src)
 
 # Shortcut to source directory
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
@@ -32,7 +40,7 @@ set(SOURCES
 
   "${SRC_DIR}/Source.cpp"
 )
-
+ 
 
 add_executable (DSTR ${SOURCES})
 
