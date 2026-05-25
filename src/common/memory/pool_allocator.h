@@ -90,8 +90,8 @@ namespace dstr {
     if (pool->free_chunks) {
       free_node_t* node = pool->free_chunks;
       pool->free_chunks = node->next;
-      node->next = nullptr;
-      return chunk->base;
+      usize index = node - reinterpret_cast<free_node_t*>(pool->meta);
+      return pool->memory + index * pool->chunk_size;
     }
     if (pool->offset + pool->chunk_size > pool->capacity) {
       return nullptr;
@@ -102,7 +102,10 @@ namespace dstr {
   }
 
   inline void pool_release(pool_t* pool, u8* ptr) {
-    
+    usize index = (ptr - pool->memory) / pool->chunk_size;
+    free_node_t* node = reinterpret_cast<free_node_t*>(pool->meta + index);
+    node->next = pool->free_chunks;
+    pool->free_chunks = node;
   }
 
 }

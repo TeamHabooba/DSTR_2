@@ -12,7 +12,7 @@
 #include <chrono>
 
 // Libs
-#include "./strings/strings.h"
+#include "../strings/strings.h"
 
 
 namespace dstr {
