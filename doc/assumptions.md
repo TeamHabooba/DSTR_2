@@ -320,7 +320,7 @@ final submitted files must still follow the official submission requirements.
 > possible without warehouse layout processing. What is the point of
 > `Module 5: Warehouse Layout and Navigation Module (Optional)` then?
 
-**Answer:** refer to [this](#q-11052026-13500800).
+**Answer:** refer [this](#q-11052026-13500800).
 
 ### Q-07052026-19360800
 On May 07th, 2026 at 19:36 (UTC+08) one of our team members has
