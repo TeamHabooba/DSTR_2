@@ -1,15 +1,259 @@
 # Contents
-This file is a specifications for all the unclear
+This file contains the specifications, assumptions and questions related to unclear
 Assignment Question parts that we've encountered.
+
 It also includes the Q&A section that contains the questions
-that the supervisor (lecturer) was asked directly
-(via MS Teams platform direct messages or face-to-face).
+that were asked directly to the supervisor (lecturer)
+via MS Teams platform direct messages or face-to-face communication.
 
 - [Assumptions](#assumptions)
 - [Q&A Section](#q--a)
 
 # Assumptions
+The assignment contains several open-ended requirements related to robot navigation,
+warehouse layout, path generation, obstacles, and submission structure. After asking
+the lecturer for clarification, our group was informed that multiple approaches are
+acceptable as long as the decisions are logical, well-justified, and properly implemented.
 
+Based on this clarification, Group 32 proceeds with the following assumptions and design
+decisions.
+
+## A1
+**Warehouse operating area**
+
+The robot operating area is represented as a two-dimensional rectangular grid.
+
+Each grid cell represents one logical warehouse position. The grid does not represent
+real-world physical measurements such as metres or centimetres. It is an abstract
+simulation model used for pathfinding and movement tracking.
+
+**Justification:** A rectangular grid is simple to represent in C++, easy to convert into
+a graph, and suitable for modelling warehouse aisles, shelves, obstacles, robot starting
+positions, item pickup locations, and packing stations.
+
+## A2
+**Coordinate system**
+
+Warehouse positions are represented using integer coordinates in the form:
+```cpp
+(row, column)
+```
+The top-left cell of the warehouse is treated as (0, 0).
+Rows increase downward and columns increase to the right.
+
+**Justification:** This is consistent with common two-dimensional array indexing in C++,
+which makes implementation easier and reduces the layout ambiguity during testing and presentation.
+
+## A3
+**Cell types**
+
+Each warehouse cell may have one of the following logical roles:
+- empty path cell;
+- obstacle cell;
+- item pickup location;
+- robot starting position;
+- packing station.
+
+A robot may move through empty path cells and may stop at item pickup locations,
+robot starting positions, and packing stations. Obstacle cells are blocked and cannot
+be entered.
+
+**Justification:** This keeps the simulation transparent and clear while still supporting the
+main warehouse navigation scenario.
+
+## A4
+**Robot movement rules**
+
+Robots move one and only one cell at a time.
+Only four-directional movement is allowed, which icludes:
+- up;
+- down;
+- left;
+- right.
+
+Diagonal movement is not allowed.
+
+**Justification:** Four-directional movement is easier to justify in a warehouse
+environment because robots normally move along aisles rather than diagonally through
+shelves or obstacles. It also keeps the graph representation and path tracking simpler.
+
+## A5
+**Graph representation for pathfinding**
+
+The warehouse layout (grid) should be converted into a graph for pathfinding.
+
+Each walkable cell is treated as a graph node. Edges are created between neighbouring
+walkable cells if movement between them is allowed.
+
+Obstacle cells are excluded from the graph.
+
+**Justification:** The assignment requires navigation and pathfinding logic. A graph is
+a suitable structure for representing possible movement paths in the warehouse.
+
+## A6
+**Edge weights and shortest path meaning**
+
+All valid movements between adjacent cells have equal cost.
+
+Therefore, the shortest path means the path with the minimum number of movement steps
+between the start position and the destination.
+
+If multiple shortest paths exist, any one valid shortest path is acceptable.
+
+Justification: Equal movement cost is appropriate for a simplified warehouse
+prototype. It avoids unnecessary complexity while still demonstrating graph-based
+pathfinding.
+
+## A7
+**Pathfinding algorithm**
+
+The pathfinding algorithm generates a valid route from the robot's current position to
+the target location if such a route exists.
+
+For an unweighted graph (area grid), Breadth-First Search (BFS) may be used to find the
+shortest path in terms of number of steps.
+
+If a path cannot be found, the system must report that the destination is unreachable.
+
+Justification: BFS is suitable for shortest-path search in an unweighted graph.
+It is also easier to explain and implement within the scope of a data structures and
+algorithms assignment.
+
+## A8
+**Static obstacles**
+
+The warehouse may contain static obstacles.
+
+Static obstacles represent blocked cells such as walls, restricted areas, unavailable
+aisles, or other fixed objects.
+
+Robots cannot move into or through obstacle cells.
+
+Justification: Obstacles make the navigation problem more realistic and demonstrate
+that the graph/pathfinding logic can handle unavailable routes.
+
+## A9
+**Other robots as dynamic obstacles**
+
+Other robots may be treated as dynamic obstacles during navigation.
+
+In this prototype, the current positions of unavailable or active robots may be treated
+as temporarily blocked cells during path generation.
+
+> [!IMPORTANT]
+> At the same time, the system does not implement full real-time multi-robot collision avoidance,
+> traffic control, deadlock detection, or time-based route reservation.
+
+**Justification:** Treating other robots as temporary obstacles demonstrates awareness of
+multi-robot navigation issues while keeping the implementation within the expected
+prototype scope.
+
+## A10
+**Stack usage for path tracking**
+
+The stack is used to store the movement path taken by a robot.
+
+Each movement step is pushed onto the stack as the robot moves forward. When the robot
+needs to return to its starting point, the stored path can be popped step by step to
+simulate reverse navigation.
+
+**Justification:** A stack follows Last-In-First-Out behaviour, which is suitable for
+reversing a path. This directly supports the robot path tracking and return-path
+requirement.
+
+## A11
+**Difference between graph pathfinding and stack path tracking**
+
+The graph is used to calculate or represent possible movement routes in the warehouse.
+
+The stack is used to record the actual path taken by the robot and to support reverse
+movement.
+
+Therefore, graph pathfinding and stack path tracking are treated as separate but related
+parts of the navigation module.
+
+**Justification:** This avoids confusing the purpose of the two data structures. The graph
+helps decide where the robot can go, while the stack records where the robot has already
+gone.
+
+## A12
+**Return path**
+
+When a robot completes a task, it may return by reversing the path stored in the stack.
+
+The return path is not necessarily recalculated as a new shortest path. It is the reverse
+of the actual path taken to reach the destination.
+
+Justification: This follows the purpose of using a stack for path tracking. It also
+matches the idea of step-by-step reverse navigation.
+
+## A13
+**Warehouse layout and optional Module 5**
+
+A minimal warehouse layout representation is required for robot navigation because the
+system cannot perform pathfinding without knowing the positions of paths, obstacles,
+items, robots, and packing stations.
+
+Therefore, Group 32 implements the required warehouse layout functionality as supporting
+logic inside the main prototype and navigation workflow.
+
+The optional Warehouse Layout and Navigation Module is interpreted as an extended module
+for more advanced layout-related features, not as a reason to omit basic layout handling
+from the required navigation system.
+
+**Justification:** Basic layout processing is necessary for graph construction and robot
+navigation. Without a layout, the navigation module cannot function correctly.
+
+## A14
+**Scope limitation**
+
+This project is a C++ data structures and algorithms prototype, not a real robotics
+control system.
+
+The system does ТЩЕ simulate:
+- physical robot size;
+- acceleration or speed;
+- sensor errors;
+- battery usage;
+- real-time traffic control;
+- mechanical movement constraints;
+- wireless communication;
+- real warehouse safety systems.
+
+**Justification:** These topics are outside the expected scope of the assignment. The
+focus of this prototype is the correct use of data structures and algorithms.
+
+## A15
+**Deterministic behaviour**
+
+Where multiple valid decisions are possible, the system may use a fixed priority order
+to keep the output predictable during testing and presentation.
+
+For example, when several neighbouring cells are equally valid, the program may check
+directions in a fixed order such as:
+- up;
+- right;
+- down;
+- left.
+
+**Justification:** Deterministic behaviour makes the program easier to test, explain,
+debug, and demonstrate during the live presentation.
+
+## A16
+**Submission structure**
+
+The project may be developed using a multi-file and multi-folder structure indexed and stored
+as a Git repository in GitHub.
+
+For final submission, the group will follow *Moodle* and supervisor (lecturer)
+instructions regarding which `.cpp`, `.hpp`, and data files must be uploaded.
+
+If the submission system does not support folders, the group will make sure that the
+submitted files can still be compiled and understood according to the instructions
+provided in the `README.md`.
+
+**Justification:** A multi-file structure improves development organization, while the
+final submitted files must still follow the official submission requirements.
 
 # Q&A
 
@@ -101,4 +345,5 @@ as your decisions are logical, well-justified, and properly implemented.
 > Please treat this as an opportunity to apply your
 understanding rather than expecting every specification to be explicitly predefined.
 
-That is why our team made some decision that are mentioned and explained [here](#assumptions).
+Based on the answer above, our team have made the design decisions documented in the
+[Assumptions](#assumptions) section.
