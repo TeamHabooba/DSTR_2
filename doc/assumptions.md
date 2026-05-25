@@ -344,7 +344,7 @@ Should robots treat each other as obstacles?
 to be used. Moreover, "Navigation" won't be possible without warehouse layout processing.
 What is the point of Module 5: Warehouse Layout and Navigation Module (Optional) then?
 
-**Answer:**
+**Answer** (on May 12th, 2026 at 16:16 (UTC+08)):
 
 > Most of the questions raised are intentionally left open-ended
 as part of the project design. The purpose of this assignment is
