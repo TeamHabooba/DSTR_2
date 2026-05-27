@@ -1,5 +1,7 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 
-#include "common/common.h"
-#include "cli/cli.h"
+#include <common/common.h>
+#include <cli/cli.h>

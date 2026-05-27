@@ -1,9 +1,8 @@
 #pragma once
 
 
-#include "../common/common.h"
-#include "../files/files.h"
 #include "./app_state.h"
+#include <common/common.h>
 
 
 namespace dstr {

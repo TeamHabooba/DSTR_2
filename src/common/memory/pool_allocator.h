@@ -3,7 +3,7 @@
 
 
 #include "./alloc.h"
-#include "../aliases/numeric.h"
+#include <common/aliases/aliases.h>
 
 
 namespace dstr {

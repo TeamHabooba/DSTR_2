@@ -3,7 +3,7 @@
  
 #include <common/circular_queue.h>
 #include <common/result.h>
-#include "robot.h"
+#include "./robot.h"
  
  
 namespace dstr {

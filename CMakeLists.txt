@@ -29,9 +29,12 @@ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(SOURCES
   #"${SRC_DIR}/files/files.cpp" - Deprecated
   "${SRC_DIR}/cli/cli.cpp"
-
+  #"${SRC_DIR}/common/graph/graph.cpp"
+  "${SRC_DIR}/robot_assignment/robot.cpp"
+  "${SRC_DIR}/robot_assignment/robot_queue.cpp"
+  "${SRC_DIR}/robot_assignment/robot_queue_display.cpp"
   "${SRC_DIR}/Source.cpp"
- "src/common/graph/graph.cpp")
+ )
 
 
 add_executable (DSTR ${SOURCES})

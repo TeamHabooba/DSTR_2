@@ -2,7 +2,7 @@
 
 
 #include <iostream>
-#include <string>
+#include <cctype>
 
 #include <common/aliases/aliases.h>
 #include <common/enums.h>
@@ -31,10 +31,20 @@ namespace dstr {
 
   // Helpers
 
-  inline string trim(const string& s) {
-    auto start = std::find_if_not(s.begin(), s.end(), ::isspace);
-    auto end = std::find_if_not(s.rbegin(), s.rend(), ::isspace).base();
-    return (start < end) ? string(start, end) : "";
+  inline string trim(const std::string& s) {
+    auto start = std::find_if_not(
+      s.begin(), s.end(),
+      [](unsigned char c) {
+        return isspace(static_cast<int>(c));
+      }
+    );
+    auto end = std::find_if_not(
+      s.rbegin(), s.rend(),
+      [](unsigned char c) {
+        return isspace(static_cast<int>(c));
+      }
+    ).base();
+    return (start < end) ? std::string(start, end) : "";
   }
 
   inline string pad_right(const string& s, const int width) {
