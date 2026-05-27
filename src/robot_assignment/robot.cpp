@@ -1,33 +1,44 @@
 // robot.cpp
 #include "robot.h"
+ 
 #include <utility>
-
-
+ 
+ 
 namespace dstr {
-
-
+ 
+ 
 // =====Constructors
-Robot::Robot()
+Robot::Robot() noexcept
     : id_{""},
       status_{RobotStatus::AVAILABLE},
       tasks_assigned_{0} {}
-
-Robot::Robot(std::string id, RobotStatus status)
+ 
+Robot::Robot(string id, RobotStatus status)
     : id_{id},
       status_{status},
       tasks_assigned_{0} {}
-
+ 
 Robot::Robot(const Robot& other)
     : id_{other.id_},
       status_{other.status_},
       tasks_assigned_{other.tasks_assigned_} {}
-
+ 
 Robot::Robot(Robot&& other) noexcept
     : id_{std::move(other.id_)},
       status_{other.status_},
       tasks_assigned_{std::exchange(other.tasks_assigned_, 0)} {}
-
-
+ 
+ 
+// =====Comparison ops
+bool Robot::operator==(const Robot& other) const {
+  return id_ == other.id_ && status_ == other.status_ && tasks_assigned_ == other.tasks_assigned_;
+}
+ 
+bool Robot::operator!=(const Robot& other) const {
+  return !(*this == other);
+}
+ 
+ 
 // =====Assignment ops
 Robot& Robot::operator=(const Robot& other) {
   if (this != &other) {
@@ -37,7 +48,7 @@ Robot& Robot::operator=(const Robot& other) {
   }
   return *this;
 }
-
+ 
 Robot& Robot::operator=(Robot&& other) noexcept {
   if (this != &other) {
     id_ = std::move(other.id_);
@@ -46,31 +57,28 @@ Robot& Robot::operator=(Robot&& other) noexcept {
   }
   return *this;
 }
-
-
+ 
+ 
 // =====Getters
-std::string Robot::id() const { return id_; }
+string Robot::id() const { return id_; }
 RobotStatus Robot::status() const { return status_; }
-i32 Robot::tasks_assigned() const { return tasks_assigned_; }
-
-
+usize Robot::tasks_assigned() const { return tasks_assigned_; }
+ 
+ 
 // =====Setters
-void Robot::set_status(RobotStatus status) {
-  status_ = status;
-}
-
-
+void Robot::set_status(RobotStatus status) { status_ = status; }
+ 
+ 
 // =====Domain methods
-void Robot::increment_tasks() {
-  tasks_assigned_++;
-}
-
-// Converts enum to a human-readable label for printing
-std::string Robot::status_string() const {
+void Robot::increment_tasks() { tasks_assigned_++; }
+ 
+// Converts enum to readable text for display
+string Robot::status_string() const {
   if (status_ == RobotStatus::AVAILABLE) { return "Available"; }
   if (status_ == RobotStatus::BUSY) { return "Busy"; }
   return "Maintenance";
 }
-
-
+ 
+ 
 } // namespace dstr
+ 

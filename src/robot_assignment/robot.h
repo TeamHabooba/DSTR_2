@@ -1,57 +1,55 @@
 // robot.h
 #pragma once
-
-#include <string>
-#include <cstdint>
-
-
+ 
+#include "common/aliases/aliases.h"
+ 
+ 
 namespace dstr {
-
-
-// Type alias as per code style — use i32 instead of raw int
-using i32 = int32_t;
-
-
-// Status options for each robot
+ 
+ 
+// The 3 possible states a robot can be in
 enum class RobotStatus {
-  AVAILABLE,    // Robot is free and can be assigned
-  BUSY,         // Robot is currently on a task
-  MAINTENANCE   // Robot is under maintenance, skip it
+  AVAILABLE,
+  BUSY,
+  MAINTENANCE
 };
-
-
-// Represents a single robot in the warehouse
+ 
+ 
+// Represents one robot in the warehouse
 class Robot {
  private:
-  std::string id_;      // e.g. "R1", "R2"
-  RobotStatus status_;  // Current status of this robot
-  i32 tasks_assigned_;  // How many tasks this robot has been given
-
+  string id_;
+  RobotStatus status_;
+  usize tasks_assigned_;
+ 
  public:
-  // Constructors
-  Robot();
-  Robot(std::string id, RobotStatus status);
+  // Ctors
+  Robot() noexcept;
+  Robot(string id, RobotStatus status);
   Robot(const Robot& other);
   Robot(Robot&& other) noexcept;
-
-  // Assignment operators
+ 
+  // Comparison ops
+  bool operator==(const Robot& other) const;
+  bool operator!=(const Robot& other) const;
+ 
+  // Assignment ops
   Robot& operator=(const Robot& other);
   Robot& operator=(Robot&& other) noexcept;
-
+ 
   // Getters
-  std::string id() const;
+  string id() const;
   RobotStatus status() const;
-  i32 tasks_assigned() const;
-
+  usize tasks_assigned() const;
+ 
   // Setters
   void set_status(RobotStatus status);
-
-  // Increment task count when assigned
+ 
+  // Domain methods
   void increment_tasks();
-
-  // Convert status enum to readable string for display
-  std::string status_string() const;
+  string status_string() const;
 };
-
-
+ 
+ 
 } // namespace dstr
+ 
