@@ -1,8 +1,8 @@
 // circular_queue.h
 #pragma once
  
-#include "common/aliases/aliases.h"
-#include "common/result.h"
+#include <common/aliases/aliases.h>
+#include <common/result.h>
  
  
 namespace dstr {
@@ -60,4 +60,3 @@ class CircularQueue {
  
  
 } // namespace dstr
- 

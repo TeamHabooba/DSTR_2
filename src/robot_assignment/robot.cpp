@@ -72,13 +72,5 @@ void Robot::set_status(RobotStatus status) { status_ = status; }
 // =====Domain methods
 void Robot::increment_tasks() { tasks_assigned_++; }
  
-// Converts enum to readable text for display
-string Robot::status_string() const {
-  if (status_ == RobotStatus::AVAILABLE) { return "Available"; }
-  if (status_ == RobotStatus::BUSY) { return "Busy"; }
-  return "Maintenance";
-}
- 
  
 } // namespace dstr
- 

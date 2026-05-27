@@ -2,6 +2,7 @@
 
 
 #include <iostream>
+#include <string>
 
 #include <common/aliases/aliases.h>
 #include <common/enums.h>
@@ -77,5 +78,15 @@ namespace dstr {
     getline(is, dummy);
   }
 
+  // Converts enum to readable text for display
+  string robot_status_string(RobotStatus status) {
+    if (status == RobotStatus::AVAILABLE){
+      return "Available";
+    }
+    if (status == RobotStatus::BUSY) {
+      return "Busy";
+    }
+    return "Maintenance";
+  }
 
 } // namespace dstr

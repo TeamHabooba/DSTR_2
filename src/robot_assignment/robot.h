@@ -1,55 +1,47 @@
-// robot.h
+// rОbot.h
 #pragma once
- 
-#include "common/aliases/aliases.h"
+
+
+#include <common/aliases/aliases.h>
+#include <common/enums.h>
  
  
 namespace dstr {
  
  
-// The 3 possible states a robot can be in
-enum class RobotStatus {
-  AVAILABLE,
-  BUSY,
-  MAINTENANCE
-};
+  // Represents one robot in the warehouse
+  class Robot {
+   private:
+    string id_;
+    RobotStatus status_;
+    usize tasks_assigned_;
  
+   public:
+    // Ctors
+    Robot() noexcept;
+    Robot(string id, RobotStatus status);
+    Robot(const Robot& other);
+    Robot(Robot&& other) noexcept;
  
-// Represents one robot in the warehouse
-class Robot {
- private:
-  string id_;
-  RobotStatus status_;
-  usize tasks_assigned_;
+    // Comparison ops
+    bool operator==(const Robot& other) const;
+    bool operator!=(const Robot& other) const;
  
- public:
-  // Ctors
-  Robot() noexcept;
-  Robot(string id, RobotStatus status);
-  Robot(const Robot& other);
-  Robot(Robot&& other) noexcept;
+    // Assignment ops
+    Robot& operator=(const Robot& other);
+    Robot& operator=(Robot&& other) noexcept;
  
-  // Comparison ops
-  bool operator==(const Robot& other) const;
-  bool operator!=(const Robot& other) const;
+    // Getters
+    string id() const;
+    RobotStatus status() const;
+    usize tasks_assigned() const;
  
-  // Assignment ops
-  Robot& operator=(const Robot& other);
-  Robot& operator=(Robot&& other) noexcept;
+    // Setters
+    void set_status(RobotStatus status);
  
-  // Getters
-  string id() const;
-  RobotStatus status() const;
-  usize tasks_assigned() const;
- 
-  // Setters
-  void set_status(RobotStatus status);
- 
-  // Domain methods
-  void increment_tasks();
-  string status_string() const;
-};
+    // Domain methods
+    void increment_tasks();
+  };
  
  
 } // namespace dstr
- 

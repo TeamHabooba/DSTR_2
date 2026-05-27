@@ -1,9 +1,9 @@
 // robot_queue.h
 #pragma once
  
-#include "circular_queue.h"
+#include <common/circular_queue.h>
+#include <common/result.h>
 #include "robot.h"
-#include "common/result.h"
  
  
 namespace dstr {
@@ -34,4 +34,3 @@ class RobotQueue {
  
  
 } // namespace dstr
- 
