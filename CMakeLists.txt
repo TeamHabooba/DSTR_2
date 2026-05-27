@@ -34,7 +34,7 @@ set(SOURCES
   "${SRC_DIR}/robot_assignment/robot_queue.cpp"
   "${SRC_DIR}/robot_assignment/robot_queue_display.cpp"
   "${SRC_DIR}/Source.cpp"
- )
+  "src/common/array/array.cpp")
 
 
 add_executable (DSTR ${SOURCES})
