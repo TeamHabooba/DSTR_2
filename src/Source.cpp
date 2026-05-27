@@ -1,12 +1,10 @@
 //#include "./headers.h"
-#include "./common/memory/pool_allocator.h"
+#include <common/memory/pool_allocator.h>
+#include <cli/app_state.h>
+#include <cli/cli.h>
 
 int main(char* argv, int argc){
-  //dstr::AppState state(std::cout, std::cin);
-  //dstr::cli_start(argv, argc, state);
-  using namespace dstr;
-  pool_t pool;
-  bool res = pool_init(&pool, 1024 * 256, 1024);
-  u8* mem = reinterpret_cast<u8*>(pool_aquire(&pool));
+  dstr::AppState state(std::cout, std::cin);
+  dstr::cli_start(argv, argc, state);
   return 0;
 }

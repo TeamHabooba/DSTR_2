@@ -1,12 +1,12 @@
 // cli.cpp
-#include "./cli.h"
+#include "cli.h"
+#include "app_state.h"
 
 #include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "./app_state.h"
 
 using std::getline;
 using std::string;

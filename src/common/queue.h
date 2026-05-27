@@ -1,4 +1,4 @@
-#include "./aliases.h"
+#include "aliases.h"
 
 
 namespace dstr {

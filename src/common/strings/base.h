@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include "../cpp_version.h"
+#include <common/cpp_version.h>
 
 
 // NOTE: dangerous macro usage. Fix later.

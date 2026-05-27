@@ -3,8 +3,6 @@
 
 
 // C
-#include "./numeric.h"
-
 
 // C++
 #include <optional>
@@ -12,7 +10,10 @@
 #include <chrono>
 
 // Libs
-#include "../strings/strings.h"
+
+// Project Files
+#include "numeric.h"
+#include <common/strings/strings.h>
 
 
 namespace dstr {

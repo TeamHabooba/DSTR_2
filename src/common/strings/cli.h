@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include "./base.h"
+#include "base.h"
 
 
 namespace dstr::strings {
@@ -19,15 +19,10 @@ namespace dstr::strings {
 
   SCSTR MSG_MAIN_MENU_FIRST_RUN_INTRO = "You are in the main menu. Choose an option and press ENTER to interact with the program.";
   SCSTR MSG_MAIN_MENU_INTRO = "Main Menu";
-  SCSTR MSG_MAIN_MENU_OPTION_1 = "1.Array implementation";
-  SCSTR MSG_MAIN_MENU_OPTION_2 = "2.List implementation";
-  SCSTR MSG_MAIN_MENU_OPTION_3 = "3.Project description";
+  SCSTR MSG_MAIN_MENU_OPTION_1 = "1.Area configuration";
+  SCSTR MSG_MAIN_MENU_OPTION_2 = "2.Robots configuration";
+  SCSTR MSG_MAIN_MENU_OPTION_3 = "3.Execute with current configuration";
   SCSTR MSG_MAIN_MENU_OPTION_0 = "0.Exit";
-
-  SCSTR MSG_DATA_LOADED_BEG = "[Data loaded: ";
-  SCSTR MSG_DATA_LOADED_END = " records]";
-  SCSTR MSG_DATA_NOT_LOADED = "[No data loaded. Choose option 1 first]";
-  SCSTR MSG_DATA_NOT_LOADED_X = "[!] Load data first (option 1).";
 
   SCSTR MSG_DESC_INTRO = "Project Description";
   SCSTR MSG_DESC = "This is Data Structures (DSTR) assignment of group DSTR32.";
@@ -40,9 +35,15 @@ namespace dstr::strings {
   SCSTR MSG_DESC_ROLES_4 = "Array (by Moha): `src/array` directory, `src/common/strings/array.h` file.";
   SCSTR MSG_DESC_ROLES_5 = "List (by Leo): `src/list` directory, `src/common/strings/list.h` file.";
 
+
+  //==============Deprecated
   SCSTR MSG_SORT_COMPLETE_BEG = "Sort complete. Time: ";
   SCSTR MSG_SORT_COMPLETE_END = " microseconds.";
   SCSTR MSG_SORT_RES = "Sorted result: ";
 
+  SCSTR MSG_DATA_LOADED_BEG = "[Data loaded: ";
+  SCSTR MSG_DATA_LOADED_END = " records]";
+  SCSTR MSG_DATA_NOT_LOADED = "[No data loaded. Choose option 1 first]";
+  SCSTR MSG_DATA_NOT_LOADED_X = "[!] Load data first (option 1).";
 
 }

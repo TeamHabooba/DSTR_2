@@ -27,11 +27,11 @@ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 
 # All executables as a list
 set(SOURCES
-  "${SRC_DIR}/files/files.cpp"
+  #"${SRC_DIR}/files/files.cpp" - Deprecated
   "${SRC_DIR}/cli/cli.cpp"
 
   "${SRC_DIR}/Source.cpp"
-)
+ "src/common/graph/graph.cpp")
 
 
 add_executable (DSTR ${SOURCES})
