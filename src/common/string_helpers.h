@@ -89,7 +89,7 @@ namespace dstr {
   }
 
   // Converts enum to readable text for display
-  string robot_status_string(RobotStatus status) {
+  inline string robot_status_string(RobotStatus status) {
     if (status == RobotStatus::AVAILABLE){
       return "Available";
     }
