@@ -27,18 +27,21 @@ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 
 # All executables as a list
 set(SOURCES
+  "${SRC_DIR}/common/array/array.cpp"
+  "${SRC_DIR}/common/graph/graph.cpp"
+
   #"${SRC_DIR}/files/files.cpp" - Deprecated
   "${SRC_DIR}/cli/cli.cpp"
-  #"${SRC_DIR}/common/graph/graph.cpp"
+
+  "${SRC_DIR}/area_layout/area_layout.cpp"
+
   "${SRC_DIR}/robot_assignment/robot.cpp"
   "${SRC_DIR}/robot_assignment/robot_queue.cpp"
   "${SRC_DIR}/robot_assignment/robot_queue_display.cpp"
-  "${SRC_DIR}/common/array/array.cpp"
-  "${SRC_DIR}/common/graph/graph.cpp"
+
   "${SRC_DIR}/Source.cpp"
 
-
- "src/area_layout/area_layout.cpp")
+)
 
 
 add_executable (DSTR ${SOURCES})
