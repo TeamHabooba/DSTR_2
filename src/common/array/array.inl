@@ -20,7 +20,7 @@ namespace dstr {
   }
 
   template <typename T>
-  Array<T>::Array(i32 initial_capacity)
+  Array<T>::Array(usize initial_capacity)
     : data_(std::make_unique<T[]>(initial_capacity)),
     size_(0),
     capacity_(initial_capacity) {
@@ -31,7 +31,7 @@ namespace dstr {
     : data_(std::make_unique<T[]>(other.capacity_)),
     size_(other.size_),
     capacity_(other.capacity_) {
-    for (i32 i = 0; i < size_; i++) {
+    for (usize i = 0; i < size_; i++) {
       data_[i] = other.data_[i];
     }
   }
@@ -50,7 +50,7 @@ namespace dstr {
     if (size_ != other.size_) {
       return false;
     }
-    for (i32 i = 0; i < size_; i++) {
+    for (usize i = 0; i < size_; i++) {
       if (data_[i] != other.data_[i]) {
         return false;
       }
@@ -71,7 +71,7 @@ namespace dstr {
       data_ = std::make_unique<T[]>(other.capacity_);
       size_ = other.size_;
       capacity_ = other.capacity_;
-      for (i32 i = 0; i < size_; i++) {
+      for (usize i = 0; i < size_; i++) {
         data_[i] = other.data_[i];
       }
     }
@@ -91,7 +91,7 @@ namespace dstr {
   // =====Getters
 
   template <typename T>
-  Result<T> Array<T>::operator[](i32 index) {
+  Result<T> Array<T>::operator[](usize index) {
     if (index < 0 || index >= size_) {
       return Err<T>(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
@@ -99,7 +99,7 @@ namespace dstr {
   }
 
   template <typename T>
-  Result<const T> Array<T>::operator[](i32 index) const {
+  Result<const T> Array<T>::operator[](usize index) const {
     if (index < 0 || index >= size_) {
       return Err<const T>(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
@@ -107,22 +107,22 @@ namespace dstr {
   }
 
   template <typename T>
-  Result<T> Array<T>::get(i32 index) {
+  Result<T> Array<T>::get(usize index) {
     return (*this)[index];
   }
 
   template <typename T>
-  Result<const T> Array<T>::get(i32 index) const {
+  Result<const T> Array<T>::get(usize index) const {
     return (*this)[index];
   }
 
   template <typename T>
-  i32 Array<T>::size() const {
+  usize Array<T>::size() const {
     return size_;
   }
 
   template <typename T>
-  i32 Array<T>::capacity() const {
+  usize Array<T>::capacity() const {
     return capacity_;
   }
 
@@ -143,14 +143,14 @@ namespace dstr {
   }
 
   template <typename T>
-  Result<void> Array<T>::insert(i32 index, const T& value) {
+  Result<void> Array<T>::insert(usize index, const T& value) {
     if (index < 0 || index > size_) {
       return Err(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
     if (size_ == capacity_) {
       grow();
     }
-    for (i32 i = size_; i > index; i--) {
+    for (usize i = size_; i > index; i--) {
       data_[i] = data_[i - 1];
     }
     data_[index] = value;
@@ -159,7 +159,7 @@ namespace dstr {
   }
 
   template <typename T>
-  Result<void> Array<T>::update(i32 index, const T& value) {
+  Result<void> Array<T>::update(usize index, const T& value) {
     if (index < 0 || index >= size_) {
       return Err(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
@@ -177,11 +177,11 @@ namespace dstr {
   }
 
   template <typename T>
-  Result<void> Array<T>::remove(i32 index) {
+  Result<void> Array<T>::remove(usize index) {
     if (index < 0 || index >= size_) {
       return Err(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
-    for (i32 i = index; i < size_ - 1; i++) {
+    for (usize i = index; i < size_ - 1; i++) {
       data_[i] = data_[i + 1];
     }
     size_--;
@@ -198,9 +198,9 @@ namespace dstr {
   template <typename T>
   template <typename Comparator>
   void Array<T>::bubble_sort(Comparator comp) {
-    for (i32 i = 0; i < size_ - 1; i++) {
+    for (usize i = 0; i < size_ - 1; i++) {
       bool swapped = false;
-      for (i32 j = 0; j < size_ - i - 1; j++) {
+      for (usize j = 0; j < size_ - i - 1; j++) {
         if (comp(data_[j + 1], data_[j])) {
           swap_elements(j, j + 1);
           swapped = true;
@@ -215,9 +215,9 @@ namespace dstr {
   template <typename T>
   template <typename Comparator>
   void Array<T>::insertion_sort(Comparator comp) {
-    for (i32 i = 1; i < size_; i++) {
+    for (usize i = 1; i < size_; i++) {
       T key = data_[i];
-      i32 j = i - 1;
+      usize j = i - 1;
       while (j >= 0 && comp(key, data_[j])) {
         data_[j + 1] = data_[j];
         j--;
@@ -239,8 +239,8 @@ namespace dstr {
 
   template <typename T>
   template <typename KeyComp>
-  i32 Array<T>::linear_search(KeyComp key_comp) const {
-    for (i32 i = 0; i < size_; i++) {
+  usize Array<T>::linear_search(KeyComp key_comp) const {
+    for (usize i = 0; i < size_; i++) {
       if (key_comp(data_[i])) {
         return i;
       }
@@ -250,11 +250,11 @@ namespace dstr {
 
   template <typename T>
   template <typename Comparator, typename KeyComp>
-  i32 Array<T>::binary_search(Comparator comp, KeyComp key_comp, const T& target) const {
-    i32 low = 0;
-    i32 high = size_ - 1;
+  usize Array<T>::binary_search(Comparator comp, KeyComp key_comp, const T& target) const {
+    usize low = 0;
+    usize high = size_ - 1;
     while (low <= high) {
-      i32 mid = low + (high - low) / 2;
+      usize mid = low + (high - low) / 2;
       if (key_comp(data_[mid])) {
         return mid;
       }
@@ -270,13 +270,13 @@ namespace dstr {
 
   template <typename T>
   template <typename Comparator, typename KeyComp>
-  i32 Array<T>::jump_search(Comparator comp, KeyComp key_comp, const T& target) const {
+  usize Array<T>::jump_search(Comparator comp, KeyComp key_comp, const T& target) const {
     if (size_ == 0) {
       return -1;
     }
-    i32 step = static_cast<i32>(std::sqrt(static_cast<double>(size_)));
-    i32 prev = 0;
-    i32 curr = step;
+    usize step = static_cast<usize>(std::sqrt(static_cast<double>(size_)));
+    usize prev = 0;
+    usize curr = step;
     while (curr < size_ && comp(data_[curr], target)) {
       prev = curr;
       curr += step;
@@ -284,7 +284,7 @@ namespace dstr {
     if (curr >= size_) {
       curr = size_ - 1;
     }
-    for (i32 i = prev; i <= curr; i++) {
+    for (usize i = prev; i <= curr; i++) {
       if (key_comp(data_[i])) {
         return i;
       }
@@ -296,7 +296,7 @@ namespace dstr {
 
   template <typename T>
   void Array<T>::print(std::ostream& os) const {
-    for (i32 i = 0; i < size_; i++) {
+    for (usize i = 0; i < size_; i++) {
       os << "[" << i << "] " << data_[i] << "\n";
     }
   }
@@ -307,14 +307,14 @@ namespace dstr {
   void Array<T>::grow() {
     capacity_ = capacity_ * 2;
     std::unique_ptr<T[]> new_data = std::make_unique<T[]>(capacity_);
-    for (i32 i = 0; i < size_; i++) {
+    for (usize i = 0; i < size_; i++) {
       new_data[i] = data_[i];
     }
     data_ = std::move(new_data);
   }
 
   template <typename T>
-  void Array<T>::swap_elements(i32 i, i32 j) {
+  void Array<T>::swap_elements(usize i, usize j) {
     T temp = data_[i];
     data_[i] = data_[j];
     data_[j] = temp;
@@ -322,10 +322,10 @@ namespace dstr {
 
   template <typename T>
   template <typename Comparator>
-  i32 Array<T>::partition(Comparator comp, i32 low, i32 high) {
+  usize Array<T>::partition(Comparator comp, usize low, usize high) {
     T pivot = data_[high];
-    i32 i = low - 1;
-    for (i32 j = low; j < high; j++) {
+    usize i = low - 1;
+    for (usize j = low; j < high; j++) {
       if (comp(data_[j], pivot)) {
         i++;
         swap_elements(i, j);
@@ -337,9 +337,9 @@ namespace dstr {
 
   template <typename T>
   template <typename Comparator>
-  void Array<T>::quick_sort_helper(Comparator comp, i32 low, i32 high) {
+  void Array<T>::quick_sort_helper(Comparator comp, usize low, usize high) {
     if (low < high) {
-      i32 pivot_pos = partition(comp, low, high);
+      usize pivot_pos = partition(comp, low, high);
       quick_sort_helper(comp, low, pivot_pos - 1);
       quick_sort_helper(comp, pivot_pos + 1, high);
     }

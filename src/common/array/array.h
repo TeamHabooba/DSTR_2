@@ -18,13 +18,13 @@ namespace dstr {
   class Array {
   private:
     std::unique_ptr<T[]> data_;
-    i32 size_;
-    i32 capacity_;
+    usize size_;
+    usize capacity_;
 
   public:
     // Ctors
     Array();
-    explicit Array(i32 initial_capacity);
+    explicit Array(usize initial_capacity);
     Array(const Array& other);
     Array(Array&& other) noexcept;
 
@@ -37,20 +37,20 @@ namespace dstr {
     Array& operator=(Array&& other) noexcept;
 
     // Getters
-    Result<T>       operator[](i32 index);
-    Result<const T> operator[](i32 index) const;
-    Result<T>       get(i32 index);
-    Result<const T> get(i32 index) const;
-    i32             size() const;
-    i32             capacity() const;
+    Result<T>       operator[](usize index);
+    Result<const T> operator[](usize index) const;
+    Result<T>       get(usize index);
+    Result<const T> get(usize index) const;
+    usize           size() const;
+    usize           capacity() const;
     bool            empty() const;
 
     // Domain methods — CRUD
     void          push_back(const T& value);
-    Result<void>  insert(i32 index, const T& value);
-    Result<void>  update(i32 index, const T& value);
+    Result<void>  insert(usize index, const T& value);
+    Result<void>  update(usize index, const T& value);
     Result<void>  pop_back();
-    Result<void>  remove(i32 index);
+    Result<void>  remove(usize index);
     void          clear();
 
     // Domain methods — Sort
@@ -65,19 +65,19 @@ namespace dstr {
 
     // Domain methods — Search
     template <typename KeyComp>
-    i32 linear_search(KeyComp key_comp) const;
+    usize linear_search(KeyComp key_comp) const;
 
     template <typename Comparator, typename KeyComp>
-    i32 binary_search(Comparator comp, KeyComp key_comp, const T& target) const;
+    usize binary_search(Comparator comp, KeyComp key_comp, const T& target) const;
 
     template <typename Comparator, typename KeyComp>
-    i32 jump_search(Comparator comp, KeyComp key_comp, const T& target) const;
+    usize jump_search(Comparator comp, KeyComp key_comp, const T& target) const;
 
     void print(std::ostream& os) const;
 
     // Output op
     friend std::ostream& operator<<(std::ostream& os, const Array<T>& arr) {
-      for (i32 i = 0; i < arr.size_; i++) {
+      for (usize i = 0; i < arr.size_; i++) {
         os << "[" << i << "] " << arr.data_[i] << "\n";
       }
       return os;
@@ -85,13 +85,13 @@ namespace dstr {
 
   private:
     void grow();
-    void swap_elements(i32 i, i32 j);
+    void swap_elements(usize i, usize j);
 
     template <typename Comparator>
-    i32 partition(Comparator comp, i32 low, i32 high);
+    usize partition(Comparator comp, usize low, usize high);
 
     template <typename Comparator>
-    void quick_sort_helper(Comparator comp, i32 low, i32 high);
+    void quick_sort_helper(Comparator comp, usize low, usize high);
   };
 
 
