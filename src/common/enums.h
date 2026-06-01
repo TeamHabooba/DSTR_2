@@ -22,5 +22,16 @@ namespace dstr {
 		MAINTENANCE
 	};
 
+	// All possible types of a single cell
+	enum class CellType {
+		NONE = 0,
+		EMPTY,
+		ROBOT,
+		OBSTACLE,
+		DROP_OFF,
+		PICK_UP,
+		STATION
+	};
+
 
 } // namespace dstr
