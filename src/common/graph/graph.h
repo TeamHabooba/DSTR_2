@@ -91,8 +91,10 @@ namespace dstr {
     void remove_node(NodeId id);
 
     i32 size() const;
-    T& at(NodeId id);
-    T& operator[](NodeId id);
+    T& at(NodeId id) const;
+    T& at(usize id) const;
+    T& operator[](NodeId id) const;
+    T& operator[](usize id) const;
     bool valid_node_id(NodeId id) const;
     bool occupied(NodeId id) const;
 
