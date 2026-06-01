@@ -24,6 +24,8 @@
 #include "./string_helpers.h"
 //#include "./time.h"             // {<ctime>, <string>, <sstream>, <iomanip>, "./aliases.h" <- {<cstdint>, <optional>, <memory>, <chrono>}
 #include "./result.h"
+#include "./graph/graph.h"
+#include "./array/array.h"
 
 #ifdef USE_CUSTOM_DATE_TIME
 #include "./time.h"
