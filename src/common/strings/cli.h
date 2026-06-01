@@ -22,7 +22,21 @@ namespace dstr::strings {
   SCSTR MSG_MAIN_MENU_OPTION_1 = "1.Area configuration";
   SCSTR MSG_MAIN_MENU_OPTION_2 = "2.Robots configuration";
   SCSTR MSG_MAIN_MENU_OPTION_3 = "3.Execute with current configuration";
+  SCSTR MSG_MAIN_MENU_OPTION_4 = "4.User manual";
+  SCSTR MSG_MAIN_MENU_OPTION_5 = "5.Credits";
   SCSTR MSG_MAIN_MENU_OPTION_0 = "0.Exit";
+
+  SCSTR MSG_GUIDE_INTRO = "User Manual";
+  SCSTR MSG_GUIDE_1 = "1 - Configure the area layout using first main menu option. It includes:";
+  SCSTR MSG_GUIDE_1A = "1a - Check the existent area layout map. It will be depicted on the screen.";
+  SCSTR MSG_GUIDE_1B = "1b - Change the area dimensions if necessary.";
+  SCSTR MSG_GUIDE_1C = "1c - Set up robot station (where to start), items locations (where to pick up), delivery station (where to drop off) locations.";
+  SCSTR MSG_GUIDE_1D = "1d - Install the walls (obstacles).";
+  SCSTR MSG_GUIDE_2 = "2 - Go back to the main menu.";
+  SCSTR MSG_GUIDE_3 = "3 - Configure the robots using second main menu option. It includes:";
+  SCSTR MSG_GUIDE_3A = "3a - Adjust robots ";
+  SCSTR MSG_GUIDE_3B = "3b - ";
+  SCSTR MSG_GUIDE_3C = "3c - ";
 
   SCSTR MSG_DESC_INTRO = "Project Description";
   SCSTR MSG_DESC = "This is Data Structures (DSTR) assignment of group DSTR32.";

@@ -2,6 +2,7 @@
 #pragma once
 
 
+#include <common/enums.h>
 #include <common/graph/graph.h>
 
 
