@@ -654,7 +654,10 @@ Result<void> show_guide(AppState& state) {
       << strings::MSG_GUIDE_1C << strings::NL
       << strings::MSG_GUIDE_1D << strings::NL
       << strings::MSG_GUIDE_2 << strings::NL
-      << strings::MSG_GUIDE_3 << strings::NL;
+      << strings::MSG_GUIDE_3 << strings::NL
+      << strings::MSG_GUIDE_3A << strings::NL
+      << strings::MSG_GUIDE_3B << strings::NL
+      << strings::MSG_GUIDE_3C << strings::NL;
   pause(state);
   return Ok();
 }
@@ -664,7 +667,13 @@ Result<void> show_credits(AppState& state) {
   state.os
       << strings::MSG_DESC << strings::NL
       << strings::MSG_DESC_MEMBERS << strings::NL
-      << strings::MSG_DESC_DOCS << strings::NL;
+      << strings::MSG_DESC_DOCS << strings::NL
+      << strings::MSG_DESC_DOCS_FILES << strings::NL
+      << strings::MSG_DESC_ROLES_1 << strings::NL
+      << strings::MSG_DESC_ROLES_2 << strings::NL
+      << strings::MSG_DESC_ROLES_3 << strings::NL
+      << strings::MSG_DESC_ROLES_4 << strings::NL
+      << strings::MSG_DESC_ROLES_5 << strings::NL;
   pause(state);
   return Ok();
 }

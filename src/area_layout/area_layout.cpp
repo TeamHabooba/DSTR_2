@@ -198,9 +198,9 @@ char AreaLayout::cell_symbol(CellType type) const {
   case CellType::DROP_OFF:
     return 'D';
   case CellType::PICK_UP:
-    return 'S';
-  case CellType::STATION:
     return 'P';
+  case CellType::STATION:
+    return 'S';
   case CellType::NONE:
   default:
     return '?';

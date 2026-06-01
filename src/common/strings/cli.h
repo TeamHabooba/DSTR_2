@@ -128,9 +128,9 @@ namespace dstr::strings {
   SCSTR MSG_DESC_DOCS_FILES = "Refer to README.md file or `docs` directory.";
   SCSTR MSG_DESC_ROLES_1 = "This project is developed in the three \"subgroups\": General, Array, List.";
   SCSTR MSG_DESC_ROLES_2 = "General (by Alex): `src/common`, `src/files` and `src/cli` directories.";
-  SCSTR MSG_DESC_ROLES_3 = " (by Alex): `src/common`, `src/files` and `src/cli` directories.";
-  SCSTR MSG_DESC_ROLES_4 = "Array (by Moha): `src/array` directory, `src/common/strings/array.h` file.";
-  SCSTR MSG_DESC_ROLES_5 = "List (by Leo): `src/list` directory, `src/common/strings/list.h` file.";
+  SCSTR MSG_DESC_ROLES_3 = " ";
+  SCSTR MSG_DESC_ROLES_4 = " (by Moha): `src/array` directory, `src/common/strings/array.h` file.";
+  SCSTR MSG_DESC_ROLES_5 = " (by Leo): `src/list` directory, `src/common/strings/list.h` file.";
 
 
   //==============Deprecated
