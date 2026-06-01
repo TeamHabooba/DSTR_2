@@ -27,6 +27,7 @@ namespace dstr {
   Link<T, W>& Link<T,W>::operator=(const Link<T, W>& other){
     weight_ = other.weight_;
     target_ = other.target_;
+    return *this;
   }
 
   template<typename T, typename W>
@@ -35,6 +36,7 @@ namespace dstr {
     target_ = other.target_;
     other.weight_ = W();
     other.target_.reset();
+    return *this;
   }
 
 
@@ -45,7 +47,7 @@ namespace dstr {
 
   template<typename T, typename W>
   Node<T, W>::Node(T value) : value_{ value }, links_{ Array<Link<T,W>>() } {}
-
+  /*
   template<typename T, typename W>
   Node<T, W>& Node<T, W>::operator=(const Node<T, W>& other) {
     value_ = other.value_;
@@ -58,8 +60,13 @@ namespace dstr {
     links_ = move(other.links_);
     other.value_ = T();
   }
-
+  */
 
   // =====Graph<> class
 
+  template<typename T, typename W>
+  Graph<T, W>::Graph() : nodes_{ Array<sp<Node<T, W>>>() }, default_weight_{ W() } {}
+
+  template<typename T, typename W>
+  Graph<T, W>::Graph(W default_weight) : nodes_{ Array<sp<Node<T, W>>>() }, default_weight_{ default_weight } {}
 }

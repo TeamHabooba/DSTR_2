@@ -35,7 +35,6 @@ namespace dstr {
 
     Link<T, W>& operator=(const Link<T, W>& other);
     Link<T, W>& operator=(Link<T, W>&& other);
-    ~Link() { }
   };
 
 
@@ -48,9 +47,8 @@ namespace dstr {
     Node();
     Node(T value);
 
-    Node<T, W>& operator=(const Node<T, W>& other);
-    Node<T, W>& operator=(Node<T, W>&& other);
-    ~Node(){}
+    //Node<T, W>& operator=(const Node<T, W>& other);
+    //Node<T, W>& operator=(Node<T, W>&& other);
   };
 
 
@@ -63,7 +61,6 @@ namespace dstr {
     Graph();
     Graph(W default_weight);
 
-    ~Graph();
   };
 
 
