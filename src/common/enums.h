@@ -33,5 +33,12 @@ namespace dstr {
 		STATION
 	};
 
+  enum class TaskStatus {
+    PENDING,
+    ASSIGNED,
+    COMPLETED,
+    CANCELLED
+  };
+
 
 } // namespace dstr

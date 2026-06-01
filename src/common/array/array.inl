@@ -92,7 +92,7 @@ namespace dstr {
 
   template <typename T>
   Result<T> Array<T>::operator[](usize index) {
-    if (index < 0 || index >= size_) {
+    if (index >= size_) {
       return Err<T>(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
     return Ok(data_[index]);
@@ -100,7 +100,7 @@ namespace dstr {
 
   template <typename T>
   Result<const T> Array<T>::operator[](usize index) const {
-    if (index < 0 || index >= size_) {
+    if (index >= size_) {
       return Err<const T>(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
     return Ok<const T>(data_[index]);
@@ -114,6 +114,16 @@ namespace dstr {
   template <typename T>
   Result<const T> Array<T>::get(usize index) const {
     return (*this)[index];
+  }
+
+  template <typename T>
+  T& Array<T>::unchecked_at(usize index) {
+    return data_[index];
+  }
+
+  template <typename T>
+  const T& Array<T>::unchecked_at(usize index) const {
+    return data_[index];
   }
 
   template <typename T>
@@ -144,7 +154,7 @@ namespace dstr {
 
   template <typename T>
   Result<void> Array<T>::insert(usize index, const T& value) {
-    if (index < 0 || index > size_) {
+    if (index > size_) {
       return Err(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
     if (size_ == capacity_) {
@@ -160,7 +170,7 @@ namespace dstr {
 
   template <typename T>
   Result<void> Array<T>::update(usize index, const T& value) {
-    if (index < 0 || index >= size_) {
+    if (index >= size_) {
       return Err(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
     data_[index] = value;
@@ -178,7 +188,7 @@ namespace dstr {
 
   template <typename T>
   Result<void> Array<T>::remove(usize index) {
-    if (index < 0 || index >= size_) {
+    if (index >= size_) {
       return Err(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));
     }
     for (usize i = index; i < size_ - 1; i++) {
@@ -217,12 +227,12 @@ namespace dstr {
   void Array<T>::insertion_sort(Comparator comp) {
     for (usize i = 1; i < size_; i++) {
       T key = data_[i];
-      usize j = i - 1;
-      while (j >= 0 && comp(key, data_[j])) {
-        data_[j + 1] = data_[j];
+      usize j = i;
+      while (j > 0 && comp(key, data_[j - 1])) {
+        data_[j] = data_[j - 1];
         j--;
       }
-      data_[j + 1] = key;
+      data_[j] = key;
     }
   }
 
@@ -251,6 +261,9 @@ namespace dstr {
   template <typename T>
   template <typename Comparator, typename KeyComp>
   usize Array<T>::binary_search(Comparator comp, KeyComp key_comp, const T& target) const {
+    if (size_ == 0) {
+      return static_cast<usize>(-1);
+    }
     usize low = 0;
     usize high = size_ - 1;
     while (low <= high) {
@@ -297,7 +310,8 @@ namespace dstr {
   template <typename T>
   void Array<T>::print(std::ostream& os) const {
     for (usize i = 0; i < size_; i++) {
-      os << "[" << i << "] " << data_[i] << "\n";
+      os << strings::TXT_LEFT_BRACKET << i << strings::TXT_RIGHT_BRACKET_SPACE
+         << data_[i] << strings::NL;
     }
   }
 
@@ -305,7 +319,12 @@ namespace dstr {
 
   template <typename T>
   void Array<T>::grow() {
-    capacity_ = capacity_ * 2;
+    if (capacity_ == 0) {
+      capacity_ = DEFAULT_CAPACITY;
+    }
+    else {
+      capacity_ = capacity_ * 2;
+    }
     std::unique_ptr<T[]> new_data = std::make_unique<T[]>(capacity_);
     for (usize i = 0; i < size_; i++) {
       new_data[i] = data_[i];

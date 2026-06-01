@@ -35,11 +35,15 @@ class CircularQueue {
   bool is_full() const { return size_ >= MAX_QUEUE_SIZE; }
   const T& at(usize index) const { return items_[index]; }
   T& at(usize index) { return items_[index]; }
+  void clear() {
+    head_index_ = 0;
+    size_ = 0;
+  }
  
   // Add an item to the queue
   Result<void> enqueue(T item) {
     if (is_full()) {
-      return Err<void>(ErrorCode::OUT_OF_RANGE, "Queue is full");
+      return Err<void>(ErrorCode::OUT_OF_RANGE, string(strings::ERR_QUEUE_FULL));
     }
     items_[size_] = item;
     size_++;

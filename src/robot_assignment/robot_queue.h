@@ -3,7 +3,7 @@
  
 #include <common/circular_queue.h>
 #include <common/result.h>
-#include "./robot.h"
+#include <common/robot/robot.h>
  
  
 namespace dstr {
@@ -25,11 +25,14 @@ class RobotQueue {
   bool is_empty() const;
   bool is_full() const;
   const Robot& robot_at(usize index) const;
+  Robot& robot_at(usize index);
  
   // Domain methods
   Result<void> enqueue(Robot robot);
-  Result<string> assign_next();
-  Result<void> set_robot_status(const string& robot_id, RobotStatus status);
+  Result<robot_id> assign_next();
+  Result<void> set_robot_status(robot_id id, RobotStatus status);
+  Result<void> set_robot_pathfinder(robot_id id, sp<Pathfinder> pathfinder);
+  void clear();
 };
  
  

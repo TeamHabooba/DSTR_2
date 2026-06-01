@@ -41,6 +41,12 @@ namespace dstr {
 
   using optional_tm = std::optional<std::tm>;
 
+  using entity_id = u32;
+  using item_id = entity_id;
+  using storage_id = entity_id;
+  using robot_id = entity_id;
+  using task_id = entity_id;
+
   //using json = nlohmann::json;
 
 

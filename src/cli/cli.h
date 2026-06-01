@@ -15,7 +15,7 @@ namespace dstr {
 
   // Entry point
 
-  Result<void> cli_start(char* argv, int argc, AppState& state);
+  Result<void> cli_start(char* argv[], int argc, AppState& state);
 
 
   // Top-level menus

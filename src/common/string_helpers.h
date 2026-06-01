@@ -1,8 +1,11 @@
 #pragma once
 
 
-#include <iostream>
+#include <algorithm>
 #include <cctype>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 
 #include <common/aliases/aliases.h>
 #include <common/enums.h>
@@ -91,12 +94,12 @@ namespace dstr {
   // Converts enum to readable text for display
   inline string robot_status_string(RobotStatus status) {
     if (status == RobotStatus::AVAILABLE){
-      return "Available";
+      return string(strings::VAL_AVAILABLE);
     }
     if (status == RobotStatus::BUSY) {
-      return "Busy";
+      return string(strings::VAL_BUSY);
     }
-    return "Maintenance";
+    return string(strings::VAL_MAINTENANCE);
   }
 
 } // namespace dstr

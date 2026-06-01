@@ -93,7 +93,7 @@ namespace dstr {
 
     Result<void> month(uint8_t value) noexcept {
       if (value < 1 || value > 12) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Month must be in range [1, 12]");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_MONTH_RANGE));
       }
       month_ = value;
       return Ok();
@@ -101,7 +101,7 @@ namespace dstr {
 
     Result<void> day(uint8_t value) noexcept {
       if (value < 1 || value > 31) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Day must be in range [1, 31]");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_DAY_RANGE));
       }
       day_ = value;
       return Ok();
@@ -109,7 +109,7 @@ namespace dstr {
 
     Result<void> hours(uint8_t value) noexcept {
       if (value > 23) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Hours must be in range [0, 23]");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_HOUR_RANGE));
       }
       uint32_t current_minutes = (milliseconds_from_midnight_ % 3600000) / 60000;
       uint32_t current_seconds = (milliseconds_from_midnight_ % 60000) / 1000;
@@ -124,7 +124,7 @@ namespace dstr {
 
     Result<void> minutes(uint8_t value) noexcept {
       if (value > 59) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Minutes must be in range [0, 59]");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_MINUTE_RANGE));
       }
       uint32_t current_hours = milliseconds_from_midnight_ / 3600000;
       uint32_t current_seconds = (milliseconds_from_midnight_ % 60000) / 1000;
@@ -139,7 +139,7 @@ namespace dstr {
 
     Result<void> seconds(uint8_t value) noexcept {
       if (value > 59) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Seconds must be in range [0, 59]");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_SECOND_RANGE));
       }
       uint32_t current_hours = milliseconds_from_midnight_ / 3600000;
       uint32_t current_minutes = (milliseconds_from_midnight_ % 3600000) / 60000;
@@ -154,7 +154,7 @@ namespace dstr {
 
     Result<void> milliseconds(uint16_t value) noexcept {
       if (value > 999) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Milliseconds must be in range [0, 999]");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_MILLISECOND_RANGE));
       }
       uint32_t current_hours = milliseconds_from_midnight_ / 3600000;
       uint32_t current_minutes = (milliseconds_from_midnight_ % 3600000) / 60000;
@@ -170,7 +170,7 @@ namespace dstr {
     Result<void> milliseconds_from_midnight(uint32_t value) noexcept {
       uint32_t max_millis = 86400000 + (leap_second_ ? 1000 : 0);
       if (value >= max_millis) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Milliseconds from midnight exceeds maximum for the day");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_MIDNIGHT_RANGE));
       }
       milliseconds_from_midnight_ = value;
       return Ok();
@@ -178,7 +178,7 @@ namespace dstr {
 
     Result<void> timezone_offset_minutes(int16_t value) noexcept {
       if (!valid_timezone_offset(value)) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Timezone offset must be in range [-720, 840] minutes");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_TZ_RANGE));
       }
       timezone_offset_minutes_ = value;
       return Ok();
@@ -194,7 +194,7 @@ namespace dstr {
 
     Result<void> set_microseconds(uint16_t value) noexcept {
       if (value >= 1000) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Microseconds must be in range [0, 999]");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_MICROSECOND_RANGE));
       }
       microseconds_ = value;
       return Ok();
@@ -212,20 +212,20 @@ namespace dstr {
 
     Result<void> validate() const noexcept {
       if (month_ < 1 || month_ > 12) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Invalid month: must be 1-12");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_INVALID_MONTH));
       }
       if (day_ < 1 || day_ > 31) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Invalid day: must be 1-31");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_INVALID_DAY));
       }
       uint32_t max_millis = 86400000 + (leap_second_ ? 1000 : 0);
       if (milliseconds_from_midnight_ >= max_millis) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Invalid milliseconds");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_INVALID_MILLISECONDS));
       }
       if (!has_valid_timezone_offset()) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Invalid timezone offset");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_INVALID_TZ));
       }
       if (microseconds_ >= 1000) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Invalid microseconds: must be 0-999");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_INVALID_MICROSECONDS));
       }
       return Ok();
     }
@@ -235,7 +235,7 @@ namespace dstr {
     std::string validate_legacy() const {
       auto result = validate();
       if (result.is_ok()) {
-        return "";
+        return std::string(strings::TXT_EMPTY);
       }
       return result.error().message();
     }
@@ -244,7 +244,7 @@ namespace dstr {
     // Change to another timezone
     Result<void> move_to_timezone(int16_t target_timezone_offset_minutes) noexcept {
       if (!valid_timezone_offset(target_timezone_offset_minutes)) {
-        return Err(ErrorCode::VALIDATION_FAILED, "Target timezone offset is invalid");
+        return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_TARGET_TZ));
       }
       int32_t diff = target_timezone_offset_minutes - timezone_offset_minutes_;
       timezone_offset_minutes_ = target_timezone_offset_minutes;
@@ -293,7 +293,7 @@ namespace dstr {
       tm_info = std::gmtime(&t);
 #endif
       if (!tm_info) {
-        return Err<Time>(ErrorCode::INVALID_ARGUMENT, "Invalid time_t value");
+        return Err<Time>(ErrorCode::INVALID_ARGUMENT, std::string(strings::ERR_TIME_TIME_T));
       }
       return from_tm(*tm_info, tz_offset);
     }
@@ -322,7 +322,7 @@ namespace dstr {
       std::time_t result = timegm(&tm_info);
 #endif
       if (result == -1) {
-        return Err<std::time_t>(ErrorCode::INVALID_ARGUMENT, "Failed to convert to time_t");
+        return Err<std::time_t>(ErrorCode::INVALID_ARGUMENT, std::string(strings::ERR_TIME_TO_TIME_T));
       }
       return Ok(result);
     }
@@ -383,7 +383,7 @@ namespace dstr {
 
     static Result<Time> from_bytes(const uint8_t* buffer) {
       if (buffer == nullptr) {
-        return Err<Time>(ErrorCode::INVALID_ARGUMENT, "Buffer pointer is null");
+        return Err<Time>(ErrorCode::INVALID_ARGUMENT, std::string(strings::ERR_TIME_BUFFER_NULL));
       }
       Time t;
       std::memcpy(&t, buffer, sizeof(Time));
@@ -430,20 +430,20 @@ namespace dstr {
     std::string to_string() const {
       char buffer[128];
       std::snprintf(buffer, sizeof(buffer),
-        "%04u-%02u-%02u %02u:%02u:%02u.%03u.%03u%s (UTC%+03d:%02u)%s",
+        strings::FMT_TIME_STRING.data(),
         year_, month_, day_, hours(), minutes(), seconds(),
         milliseconds(), microseconds(),
-        leap_second() ? "+leap" : "",
+        leap_second() ? strings::TXT_LEAP_SECOND.data() : strings::TXT_EMPTY.data(),
         timezone_offset_minutes_ / 60,
         static_cast<unsigned>(std::abs(timezone_offset_minutes_ % 60)),
-        is_dst() ? " DST" : "");
+        is_dst() ? strings::TXT_DST.data() : strings::TXT_EMPTY.data());
       return std::string(buffer);
     }
 
     std::string to_iso8601() const {
       char buffer[64];
       std::snprintf(buffer, sizeof(buffer),
-        "%04u-%02u-%02uT%02u:%02u:%02u.%03u%+03d:%02u",
+        strings::FMT_TIME_ISO8601.data(),
         year_, month_, day_, hours(), minutes(), seconds(),
         milliseconds(),
         timezone_offset_minutes_ / 60,

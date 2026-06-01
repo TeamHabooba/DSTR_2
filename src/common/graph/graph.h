@@ -26,11 +26,11 @@ namespace dstr {
     usize index;
     u32 generation;
 
-    bool operator==(NodeId other) {
+    bool operator==(NodeId other) const {
       return generation == other.generation && index == other.index;
     }
 
-    bool operator!=(NodeId other) {
+    bool operator!=(NodeId other) const {
       return !((*this) == other);
     }
   };
@@ -42,6 +42,8 @@ namespace dstr {
     Node<T, W> node;
     bool occupied;
     u32 generation;
+
+    NodeSlot();
   };
 
 
@@ -55,8 +57,9 @@ namespace dstr {
     Edge();
     Edge(NodeId target, W weight = W());
 
-    const NodeId target();
-    const W weight();
+    NodeId target() const;
+    W weight() const;
+    void set_weight(W weight);
   };
 
 
@@ -68,6 +71,12 @@ namespace dstr {
   public:
     Node();
     Node(T value);
+
+    const T& value() const;
+    T& value();
+    void set_value(T value);
+    const Array<Edge<T, W>>& links() const;
+    Array<Edge<T, W>>& links();
   };
 
 
@@ -81,35 +90,46 @@ namespace dstr {
   class Graph {
     Array<NodeSlot<T,W>> slots_;
     W default_weight_;
+    usize size_;
 
   public:
     Graph();
     Graph(W default_weight);
 
     Result<NodeId> add_node(T value);
-    void set_node_value(NodeId id, T value);
-    void remove_node(NodeId id);
+    Result<void> set_node_value(NodeId id, T value);
+    Result<void> remove_node(NodeId id);
 
-    i32 size() const;
-    T& at(NodeId id) const;
-    T& at(usize id) const;
-    T& operator[](NodeId id) const;
-    T& operator[](usize id) const;
+    usize size() const;
+    usize raw_size() const;
+    Result<T> at(NodeId id) const;
+    Result<T> at(usize raw_index) const;
+    Result<Array<Edge<T, W>>> edges(NodeId id) const;
+    Result<void> update(NodeId id, T value);
+    Result<void> update(usize raw_index, T value);
     bool valid_node_id(NodeId id) const;
     bool occupied(NodeId id) const;
+    bool occupied(usize raw_index) const;
+    NodeId node_id_at(usize raw_index) const;
 
-    void add_edge_bidirectional(NodeId from, NodeId to, W weight = default_weight_);
-    void add_edge_directional(NodeId from, NodeId to, W weight = default_weight_);
-    Result<void> add_edge(NodeId from, NodeId to, bool bidirectional = false, W weight = default_weight_);
-    void edge_weight_directional(NodeId from, NodeId to, W weight);
-    void edge_weight_bidirectional(NodeId from, NodeId to, W weight);
+    Result<void> add_edge_bidirectional(NodeId from, NodeId to, W weight);
+    Result<void> add_edge_directional(NodeId from, NodeId to, W weight);
+    Result<void> add_edge(NodeId from, NodeId to, bool bidirectional = false);
+    Result<void> add_edge(NodeId from, NodeId to, bool bidirectional, W weight);
+    Result<void> edge_weight_directional(NodeId from, NodeId to, W weight);
+    Result<void> edge_weight_bidirectional(NodeId from, NodeId to, W weight);
     Result<void> edge_weight(NodeId from, NodeId to, W weight, bool bidirectional = false);
-    void remove_edge_directional(NodeId from, NodeId to);
-    void remove_edge_bidirectional(NodeId from, NodeId to);
+    Result<void> remove_edge_directional(NodeId from, NodeId to);
+    Result<void> remove_edge_bidirectional(NodeId from, NodeId to);
     Result<void> remove_edge(NodeId from, NodeId to, bool bidirectional = false);
-    W edge_weight(NodeId from, NodeId to) const;
+    Result<W> edge_weight(NodeId from, NodeId to) const;
     bool edge_exists(NodeId from, NodeId to) const;
+    Result<void> clear_edges(NodeId id);
+    void clear_edges();
 
+  private:
+    Result<usize> find_edge_index(NodeId from, NodeId to) const;
+    Result<void> validate_pair(NodeId from, NodeId to) const;
 
   };
 

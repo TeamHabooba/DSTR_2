@@ -41,6 +41,8 @@ namespace dstr {
     Result<const T> operator[](usize index) const;
     Result<T>       get(usize index);
     Result<const T> get(usize index) const;
+    T&              unchecked_at(usize index);
+    const T&        unchecked_at(usize index) const;
     usize           size() const;
     usize           capacity() const;
     bool            empty() const;
@@ -78,7 +80,8 @@ namespace dstr {
     // Output op
     friend std::ostream& operator<<(std::ostream& os, const Array<T>& arr) {
       for (usize i = 0; i < arr.size_; i++) {
-        os << "[" << i << "] " << arr.data_[i] << "\n";
+        os << strings::TXT_LEFT_BRACKET << i << strings::TXT_RIGHT_BRACKET_SPACE
+           << arr.data_[i] << strings::NL;
       }
       return os;
     }

@@ -11,17 +11,6 @@ project ("DSTR" LANGUAGES CXX)
 # Uncomment the line below to specify Git executable location if necessary
 #set(GIT_EXECUTABLE "C:/Program Files/Git/bin/git.exe") 
 
-# Add nlohmann json to project
-set(NLOHMANN_JSON_VERSION "v3.12.0")
-include(FetchContent)
-FetchContent_Declare(
-    json
-    GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG ${NLOHMANN_JSON_VERSION}
-)
-FetchContent_MakeAvailable(json)
-
-
 # Shortcut to source directory
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 
@@ -29,15 +18,24 @@ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(SOURCES
   "${SRC_DIR}/common/array/array.cpp"
   "${SRC_DIR}/common/graph/graph.cpp"
+  "${SRC_DIR}/common/position.cpp"
+  "${SRC_DIR}/common/cell/cell.cpp"
+  "${SRC_DIR}/common/item/item.cpp"
+  "${SRC_DIR}/common/storage/storage.cpp"
+  "${SRC_DIR}/common/robot/robot.cpp"
 
-  #"${SRC_DIR}/files/files.cpp" - Deprecated
+  "${SRC_DIR}/files/files.cpp"
   "${SRC_DIR}/cli/cli.cpp"
 
   "${SRC_DIR}/area_layout/area_layout.cpp"
 
-  "${SRC_DIR}/robot_assignment/robot.cpp"
   "${SRC_DIR}/robot_assignment/robot_queue.cpp"
-  "${SRC_DIR}/robot_assignment/robot_queue_display.cpp"
+
+  "${SRC_DIR}/order_management/task.cpp"
+  "${SRC_DIR}/order_management/task_queue.cpp"
+
+  "${SRC_DIR}/robot_navigation/path.cpp"
+  "${SRC_DIR}/robot_navigation/pathfinder.cpp"
 
   "${SRC_DIR}/Source.cpp"
 
@@ -47,7 +45,6 @@ set(SOURCES
 add_executable (DSTR ${SOURCES})
 
 set_target_properties(DSTR PROPERTIES LINKER_LANGUAGE CXX)
-target_link_libraries(DSTR PRIVATE nlohmann_json::nlohmann_json)
 
 target_include_directories(DSTR PRIVATE ${CMAKE_SOURCE_DIR})
 target_include_directories(DSTR PRIVATE ${SRC_DIR})
