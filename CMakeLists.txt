@@ -38,7 +38,7 @@ set(SOURCES
   "${SRC_DIR}/Source.cpp"
 
 
-)
+ "src/area_layout/area_layout.cpp")
 
 
 add_executable (DSTR ${SOURCES})
