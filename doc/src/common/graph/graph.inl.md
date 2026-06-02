@@ -1,52 +1,39 @@
-﻿# ``src/common/graph/graph.inl``
+﻿# `src/common/graph/graph.inl`
 
 ## Purpose
-Graph data structure used by warehouse layout and pathfinding.
+Template implementation of graph node storage, generation validation, edge management, and raw-slot access.
 
 ## Module
-``common``
+`common/graph`
 
 ## File Kind
-Inline implementation file: contains template method definitions included by headers.
+Template implementation file: included by its matching header so template definitions are visible at compile time.
 
 ## Includes
-- ``graph.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"graph.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+Graph stores nodes in an Array of NodeSlot values. Each NodeId contains a slot index and generation; validation checks both, so removed/reused slots cannot be accessed through old ids. Edges live in each Node as adjacency arrays.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-- ``target_``
-- ``weight_``
-- ``value_``
-- ``links_``
-- ``size_``
+- (none declared in this file)
 
 ## Functions And Methods
-- ``return Err(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_GRAPH_NODE_ID));``
-- ``return Ok();``
-- ``return Ok(slots_.unchecked_at(id.index).node.value());``
-- ``return Ok(slots_.unchecked_at(raw_index).node.value());``
-- ``return Ok(slots_.unchecked_at(id.index).node.links());``
-- ``return set_node_value(id, value);``
-- ``return Err(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_GRAPH_RAW_INDEX));``
-- ``return valid_node_id(id);``
-- ``return add_edge_directional(to, from, weight);``
-- ``return add_edge(from, to, bidirectional, default_weight_);``
-- ``return add_edge_bidirectional(from, to, weight);``
-- ``return add_edge_directional(from, to, weight);``
-- ``return edge_weight_directional(to, from, weight);``
-- ``return edge_weight_bidirectional(from, to, weight);``
-- ``return edge_weight_directional(from, to, weight);``
-- ``return remove_edge_directional(to, from);``
-- ``return remove_edge_bidirectional(from, to);``
-- ``return remove_edge_directional(from, to);``
-- ``return Ok(slots_.unchecked_at(from.index).node.links().unchecked_at(edge_index.value()).weight());``
-- ``return find_edge_index(from, to).is_ok();``
-- ``return Ok(i);``
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+- Template placement: follows; template definitions are kept in .inl and included by the matching header.
+

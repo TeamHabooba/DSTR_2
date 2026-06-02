@@ -1,29 +1,39 @@
-﻿# ``src/cli/cli.h``
+﻿# `src/cli/cli.h`
 
 ## Purpose
-Command-line interface and application state.
+CLI boundary declarations for numeric option parsing and application startup.
 
 ## Module
-``cli``
+`cli`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-- ``./app_state.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"./app_state.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+The CLI keeps the AreaLayout visible above menus, reads numbered options, validates input with Result, mutates AppState, then pauses before redraw so output remains visible after screen clearing.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-- ``Result<int> get_option(std::istream& is);``
-- ``Result<void> cli_start(char* argv[], int argc, AppState& state);``
+- `Result<int> get_option(std::istream& is);`: Reads numeric CLI input, validates it through Result, and dispatches to menu handlers that redraw the layout-first interface.
+- `Result<void> cli_start(char* argv[], int argc, AppState& state);`: Reads numeric CLI input, validates it through Result, and dispatches to menu handlers that redraw the layout-first interface.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

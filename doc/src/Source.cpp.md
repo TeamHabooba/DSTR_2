@@ -1,29 +1,38 @@
-﻿# ``src/Source.cpp``
+﻿# `src/Source.cpp`
 
 ## Purpose
-Project source file.
+Program entry point: constructs shared CLI application state and delegates execution to the project CLI dispatcher.
 
 ## Module
-``Source.cpp``
+`root`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``./headers.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"./headers.h"`
 
 ## Namespaces
-No namespace declaration was found in this file.
+- Global `main`, then delegates to `dstr` APIs.
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+The file follows the project pattern of small modules, dstr namespace ownership, project aliases, and explicit Result-returning APIs for fallible behavior.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-- ``int main(int argc, char* argv[]) {``
-- ``dstr::AppState state(std::cout, std::cin);``
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: partially follows the project-wide dstr namespace convention; the C++ main function must remain global but delegates immediately to dstr APIs.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

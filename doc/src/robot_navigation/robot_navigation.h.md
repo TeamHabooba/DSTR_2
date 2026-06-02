@@ -1,10 +1,10 @@
-﻿# `src/common/strings/base.h`
+﻿# `src/robot_navigation/robot_navigation.h`
 
 ## Purpose
-Base string constant helpers and compile-time string aliasing for the project strings module.
+Compatibility include for robot navigation features, kept as a small module-facing header.
 
 ## Module
-`common/strings`
+`robot_navigation`
 
 ## File Kind
 Header file: declares public API, types, aliases, constants, or inline template entry points.
@@ -14,13 +14,13 @@ Header file: declares public API, types, aliases, constants, or inline template 
 - (none)
 
 ### Project Files
-- `<common/cpp_version.h>`
+- (none)
 
 ## Namespaces
 - (none declared)
 
 ## How It Works
-This file contains compile-time string constants only. Other modules include these headers so UI text, domain tokens, and errors stay centralized.
+The file follows the project pattern of small modules, dstr namespace ownership, project aliases, and explicit Result-returning APIs for fallible behavior.
 
 ## Types, Structs, Enums, And Aliases
 - (none declared in this file)
@@ -33,6 +33,6 @@ This file contains compile-time string constants only. Other modules include the
 
 ## Project Convention Compliance
 - Namespace: does not follow the project-wide dstr namespace convention.
-- String ownership: follows; this file is part of the centralized strings module.
-- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
 

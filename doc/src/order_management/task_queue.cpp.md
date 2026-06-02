@@ -1,45 +1,50 @@
-﻿# ``src/order_management/task_queue.cpp``
+﻿# `src/order_management/task_queue.cpp`
 
 ## Purpose
-Order/task queue model and FIFO task handling.
+TaskQueue implementation: dequeues pending work into assigned tasks, completes assigned work by id, and stores task history.
 
 ## Module
-``order_management``
+`order_management`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``task_queue.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"task_queue.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+TaskQueue separates lifecycle buckets: pending work is FIFO, assigned/completed tasks are arrays. assign_next moves one pending task into assigned with a robot id; complete moves matching assigned work into completed.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-- ``usize TaskQueue::pending_size() const { return pending_.size(); }``
-- ``usize TaskQueue::assigned_size() const { return assigned_.size(); }``
-- ``usize TaskQueue::completed_size() const { return completed_.size(); }``
-- ``bool TaskQueue::empty() const { return pending_.empty(); }``
-- ``Result<void> TaskQueue::enqueue(Task task) {``
-- ``Result<void> TaskQueue::add_assigned(Task task) {``
-- ``return Ok();``
-- ``Result<void> TaskQueue::add_completed(Task task) {``
-- ``Result<Task> TaskQueue::assign_next(robot_id robot) {``
-- ``return Ok(assigned);``
-- ``Result<void> TaskQueue::complete(task_id id) {``
-- ``return Err(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_TASK_ASSIGNED_NOT_FOUND));``
-- ``Result<Task> TaskQueue::pending_at(usize index) const {``
-- ``Result<Task> TaskQueue::assigned_at(usize index) const {``
-- ``return Ok(assigned_.unchecked_at(index));``
-- ``Result<Task> TaskQueue::completed_at(usize index) const {``
-- ``return Ok(completed_.unchecked_at(index));``
-- ``void TaskQueue::clear() {``
+- `usize TaskQueue::pending_size() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `usize TaskQueue::assigned_size() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `usize TaskQueue::completed_size() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `bool TaskQueue::empty() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `Result<void> TaskQueue::enqueue(Task task);`: Moves the next available value through the queue workflow while preserving Result-based error reporting.
+- `Result<void> TaskQueue::add_assigned(Task task);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<void> TaskQueue::add_completed(Task task);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<Task> TaskQueue::assign_next(robot_id robot);`: Moves the next available value through the queue workflow while preserving Result-based error reporting.
+- `Result<void> TaskQueue::complete(task_id id);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<Task> TaskQueue::pending_at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<Task> TaskQueue::assigned_at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<Task> TaskQueue::completed_at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `void TaskQueue::clear();`: Resets the backing container state so later operations start from an empty collection.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

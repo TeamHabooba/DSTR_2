@@ -1,28 +1,38 @@
-﻿# ``src/common/cpp_version.h``
+﻿# `src/common/cpp_version.h`
 
 ## Purpose
-Project source file.
+C++ standard feature-detection header used by string constants and compatibility code.
 
 ## Module
-``common``
+`common`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-No direct include directives were found.
+### Standard Library
+- (none)
+
+### Project Files
+- (none)
 
 ## Namespaces
-No namespace declaration was found in this file.
+- (none declared)
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+The file follows the project pattern of small modules, dstr namespace ownership, project aliases, and explicit Result-returning APIs for fallible behavior.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-No function or method declarations/definitions were detected by the documentation scanner.
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: does not follow the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

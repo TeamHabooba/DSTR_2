@@ -1,31 +1,41 @@
-﻿# ``src/common/enums.h``
+﻿# `src/common/enums.h`
 
 ## Purpose
-Project source file.
+Central enum definitions for movement, robot status, cell type, and task status.
 
 ## Module
-``common``
+`common`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-- ``common/aliases/aliases.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `<common/aliases/aliases.h>`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-- ``enum class MovementDirection``
-- ``enum class RobotStatus``
-- ``enum class CellType``
-- ``enum class TaskStatus``
+## How It Works
+The file follows the project pattern of small modules, dstr namespace ownership, project aliases, and explicit Result-returning APIs for fallible behavior.
+
+## Types, Structs, Enums, And Aliases
+- `enum class MovementDirection`: Directional enum for robot/layout movement logic.
+- `enum class RobotStatus`: Lifecycle enum for robot availability and maintenance state.
+- `enum class CellType`: Layout cell classification enum used to decide symbols, walkability, stations, storage, and task endpoints.
+- `enum class TaskStatus`: Lifecycle enum for pending, assigned, completed, and cancelled tasks.
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-No function or method declarations/definitions were detected by the documentation scanner.
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

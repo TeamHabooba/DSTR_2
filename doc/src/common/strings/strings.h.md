@@ -1,31 +1,40 @@
-﻿# ``src/common/strings/strings.h``
+﻿# `src/common/strings/strings.h`
 
 ## Purpose
-Project source file.
+Umbrella header for all project string constant groups.
 
 ## Module
-``common``
+`common/strings`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-- ``./errors.h``
-- ``./cli.h``
-- ``./path.h``
-- ``./domain.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"./errors.h"`
+- `"./cli.h"`
+- `"./domain.h"`
 
 ## Namespaces
-No namespace declaration was found in this file.
+- (none declared)
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+This file contains compile-time string constants only. Other modules include these headers so UI text, domain tokens, and errors stay centralized.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-No function or method declarations/definitions were detected by the documentation scanner.
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: does not follow the project-wide dstr namespace convention.
+- String ownership: follows; this file is part of the centralized strings module.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

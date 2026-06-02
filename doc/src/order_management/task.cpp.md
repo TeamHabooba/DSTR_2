@@ -1,36 +1,46 @@
-﻿# ``src/order_management/task.cpp``
+﻿# `src/order_management/task.cpp`
 
 ## Purpose
-Order/task queue model and FIFO task handling.
+Task implementation with value-style construction, status transitions, assignment tracking, and simple accessors.
 
 ## Module
-``order_management``
+`order_management`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``task.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"task.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+Task carries the data needed for one robot job. Status and assigned robot are updated as the task moves through TaskQueue lifecycle buckets.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-- ``id_``
+- (none declared in this file)
 
 ## Functions And Methods
-- ``task_id Task::id() const { return id_; }``
-- ``item_id Task::item() const { return item_; }``
-- ``robot_id Task::assigned_robot() const { return assigned_robot_; }``
-- ``GridPosition Task::pickup() const { return pickup_; }``
-- ``GridPosition Task::dropoff() const { return dropoff_; }``
-- ``TaskStatus Task::status() const { return status_; }``
-- ``void Task::assign(robot_id robot) {``
-- ``void Task::complete() {``
-- ``void Task::cancel() {``
+- `task_id Task::id() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `item_id Task::item() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `robot_id Task::assigned_robot() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `GridPosition Task::pickup() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `GridPosition Task::dropoff() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `TaskStatus Task::status() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `void Task::assign(robot_id robot);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `void Task::complete();`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `void Task::cancel();`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

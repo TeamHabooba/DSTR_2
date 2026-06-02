@@ -1,28 +1,42 @@
-﻿# ``src/common/math.h``
+﻿# `src/common/math.h`
 
 ## Purpose
-Project source file.
+Small numeric helpers for floating-point equality with relative and absolute tolerance.
 
 ## Module
-``common``
+`common`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-- ``cmath``
+### Standard Library
+- `<cmath>`
+
+### Project Files
+- (none)
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+The file follows the project pattern of small modules, dstr namespace ownership, project aliases, and explicit Result-returning APIs for fallible behavior.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- `abs_tol`: Internal state used by the file API or domain object.
+- `b_abs`: Internal state used by the file API or domain object.
 
 ## Functions And Methods
-- ``return std::abs(a - b) <= std::max(rel_tol * std::max(a_abs, b_abs), abs_tol);``
+- `double a_abs = std::abs(a);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `double b_abs = std::abs(b);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `float a_abs = std::abs(a);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `float b_abs = std::abs(b);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

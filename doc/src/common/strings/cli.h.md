@@ -1,28 +1,39 @@
-﻿# ``src/common/strings/cli.h``
+﻿# `src/common/strings/cli.h`
 
 ## Purpose
-Project source file.
+Centralized CLI text constants: menu labels, prompts, user manual text, credits, and display messages.
 
 ## Module
-``common``
+`common/strings`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-- ``base.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"base.h"`
 
 ## Namespaces
-- ``dstr::strings``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+The CLI keeps the AreaLayout visible above menus, reads numbered options, validates input with Result, mutates AppState, then pauses before redraw so output remains visible after screen clearing.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- `NL`: Internal state used by the file API or domain object.
 
 ## Functions And Methods
-No function or method declarations/definitions were detected by the documentation scanner.
+- `SCSTR MSG_INPUT_STATUS = "Status (1 available, 2 busy, 3 maintenance): ";`: Returns stored state directly without extra allocation or ownership transfer.
+- `SCSTR MSG_DESC_MEMBERS = "Group members are:\nTP081705 - Kurapatkin Aliaksandr (Alex) (Leader)\nTP082557 - Leon Frank Aminiel (Leo)\nTP082459 - Mohamed Abdif...`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; this file is part of the centralized strings module.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

@@ -1,10 +1,10 @@
-﻿# `src/common/robot/robot.h`
+﻿# `src/robot_assignment/robot.h`
 
 ## Purpose
-Primary robot domain object declaration with numeric id, status, position, home station, task count, and optional Pathfinder component.
+Legacy robot-assignment robot model kept for assignment compatibility beside the newer common robot model.
 
 ## Module
-`common/robot`
+`robot_assignment`
 
 ## File Kind
 Header file: declares public API, types, aliases, constants, or inline template entry points.
@@ -16,45 +16,34 @@ Header file: declares public API, types, aliases, constants, or inline template 
 ### Project Files
 - `<common/aliases/aliases.h>`
 - `<common/enums.h>`
-- `<common/position.h>`
 
 ## Namespaces
 - `dstr`
 
 ## How It Works
-Robot stores only lightweight identity/state fields plus a shared Pathfinder pointer. Copy and move operations preserve the navigation component reference intentionally.
+RobotQueue wraps a CircularQueue and searches by robot_id when updating status or assigning pathfinders. Assignment rotates through robots so available robots are selected in queue order.
 
 ## Types, Structs, Enums, And Aliases
-- `class Pathfinder`: Navigation component that references the current AreaLayout, caches routes by layout version, and computes missing routes with BFS.
 - `class Robot`: Robot domain entity with numeric id, status, current and home positions, task counter, and optional Pathfinder component.
 
 ## Fields
 - `id_`: Stores an identifier or graph handle used for stable lookup.
 - `status_`: Stores lifecycle state from the project enum set.
-- `position_`: Stores a GridPosition used by layout/navigation logic.
-- `home_position_`: Stores a GridPosition used by layout/navigation logic.
 - `tasks_assigned_`: Stores domain objects managed by the CLI workflow.
-- `pathfinder_`: References the navigation component used to compute or cache routes.
 
 ## Functions And Methods
 - `Robot() noexcept;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
-- `Robot(robot_id id, RobotStatus status, GridPosition position);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Robot(string id, RobotStatus status);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 - `Robot(const Robot& other);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 - `Robot(Robot&& other) noexcept;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 - `bool operator==(const Robot& other) const;`: Implements value comparison or copy/move behavior using the object identity fields defined by the class.
 - `bool operator!=(const Robot& other) const;`: Implements value comparison or copy/move behavior using the object identity fields defined by the class.
 - `Robot& operator=(const Robot& other);`: Implements value comparison or copy/move behavior using the object identity fields defined by the class.
 - `Robot& operator=(Robot&& other) noexcept;`: Implements value comparison or copy/move behavior using the object identity fields defined by the class.
-- `robot_id id() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `string id() const;`: Returns stored state directly without extra allocation or ownership transfer.
 - `RobotStatus status() const;`: Returns stored state directly without extra allocation or ownership transfer.
-- `GridPosition position() const;`: Returns stored state directly without extra allocation or ownership transfer.
-- `GridPosition home_position() const;`: Returns stored state directly without extra allocation or ownership transfer.
 - `usize tasks_assigned() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
-- `sp<Pathfinder> pathfinder() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 - `void set_status(RobotStatus status);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
-- `void set_position(GridPosition position);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
-- `void set_home_position(GridPosition position);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
-- `void set_pathfinder(sp<Pathfinder> pathfinder);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
 - `void increment_tasks();`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 
 ## Project Convention Compliance

@@ -1,36 +1,41 @@
-﻿# ``src/common/array/array.inl``
+﻿# `src/common/array/array.inl`
 
 ## Purpose
-Dynamic self-implemented array container and array algorithms.
+Template implementation of Array growth, element access, insertion/removal, sorting algorithms, search algorithms, and output formatting.
 
 ## Module
-``common``
+`common/array`
 
 ## File Kind
-Inline implementation file: contains template method definitions included by headers.
+Template implementation file: included by its matching header so template definitions are visible at compile time.
 
 ## Includes
-- ``array.h``
-- ``cmath``
-- ``utility``
-- ``common/strings/strings.h``
+### Standard Library
+- `<cmath>`
+- `<utility>`
+
+### Project Files
+- `"array.h"`
+- `<common/strings/strings.h>`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+Array owns a contiguous buffer and grows capacity before insertions exceed it. Checked operations return Result; unchecked_at is reserved for call sites that already validated indexes. Sorting/searching algorithms work in-place on the same buffer.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-- ``size_``
-- ``capacity_``
+- (none declared in this file)
 
 ## Functions And Methods
-- ``return Ok(data_[index]);``
-- ``return Err(ErrorCode::OUT_OF_RANGE, string(strings::ERR_INVALID_ARGUMENT));``
-- ``return Ok();``
-- ``return Err(ErrorCode::EMPTY_CONTAINER, string(strings::ERR_INVALID_ARGUMENT));``
-- ``else if (comp(data_[mid], target)) {``
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+- Template placement: follows; template definitions are kept in .inl and included by the matching header.
+

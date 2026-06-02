@@ -1,37 +1,48 @@
-﻿# ``src/robot_navigation/path.h``
+﻿# `src/robot_navigation/path.h`
 
 ## Purpose
-Path representation and graph-based pathfinder.
+Path value object that stores ordered grid positions and can expose the route as a reverse stack for robot movement.
 
 ## Module
-``robot_navigation``
+`robot_navigation`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-- ``common/array/array.h``
-- ``common/position.h``
-- ``common/result.h``
-- ``common/stack/stack.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `<common/array/array.h>`
+- `<common/position.h>`
+- `<common/result.h>`
+- `<common/stack/stack.h>`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-- ``class Path``
+## How It Works
+The file follows the project pattern of small modules, dstr namespace ownership, project aliases, and explicit Result-returning APIs for fallible behavior.
+
+## Types, Structs, Enums, And Aliases
+- `class Path`: Ordered path of GridPosition steps. It stores the route in forward order and can produce a stack for reverse traversal.
 
 ## Fields
-- ``steps_``
+- `steps_`: Internal state used by the file API or domain object.
 
 ## Functions And Methods
-- ``usize size() const;``
-- ``bool empty() const;``
-- ``Result<GridPosition> at(usize index) const;``
-- ``Result<GridPosition> last() const;``
-- ``Result<void> push(GridPosition position);``
-- ``Result<Stack<GridPosition>> reverse_stack() const;``
-- ``void clear();``
+- `Path();`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `usize size() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `bool empty() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `Result<GridPosition> at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<GridPosition> last() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<void> push(GridPosition position);`: Uses the backing Array end as the active stack/queue access point and checks empty state before reading.
+- `Result<Stack<GridPosition>> reverse_stack() const;`: Pushes path steps into a Stack so consumers can pop positions in reverse order.
+- `void clear();`: Resets the backing container state so later operations start from an empty collection.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

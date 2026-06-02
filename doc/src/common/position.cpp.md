@@ -1,28 +1,38 @@
-﻿# ``src/common/position.cpp``
+﻿# `src/common/position.cpp`
 
 ## Purpose
-Project source file.
+GridPosition implementation for default/row-column construction and equality comparison.
 
 ## Module
-``common``
+`common`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``position.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"position.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+GridPosition is intentionally trivial: row and col are stored directly, and comparisons check both coordinates.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-No function or method declarations/definitions were detected by the documentation scanner.
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

@@ -1,39 +1,48 @@
-﻿# ``src/common/robot/robot.cpp``
+﻿# `src/common/robot/robot.cpp`
 
 ## Purpose
-Robot entity and robot runtime state.
+Robot implementation with copy/move behavior, id-based equality, status/position setters, and Pathfinder ownership assignment.
 
 ## Module
-``common``
+`common/robot`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``robot.h``
-- ``utility``
+### Standard Library
+- `<utility>`
+
+### Project Files
+- `"robot.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+Robot stores only lightweight identity/state fields plus a shared Pathfinder pointer. Copy and move operations preserve the navigation component reference intentionally.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-- ``id_``
+- (none declared in this file)
 
 ## Functions And Methods
-- ``robot_id Robot::id() const { return id_; }``
-- ``RobotStatus Robot::status() const { return status_; }``
-- ``GridPosition Robot::position() const { return position_; }``
-- ``GridPosition Robot::home_position() const { return home_position_; }``
-- ``usize Robot::tasks_assigned() const { return tasks_assigned_; }``
-- ``sp<Pathfinder> Robot::pathfinder() const { return pathfinder_; }``
-- ``void Robot::set_status(RobotStatus status) { status_ = status; }``
-- ``void Robot::set_position(GridPosition position) { position_ = position; }``
-- ``void Robot::set_home_position(GridPosition position) { home_position_ = position; }``
-- ``void Robot::set_pathfinder(sp<Pathfinder> pathfinder) { pathfinder_ = std::move(pathfinder); }``
-- ``void Robot::increment_tasks() { tasks_assigned_++; }``
+- `robot_id Robot::id() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `RobotStatus Robot::status() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `GridPosition Robot::position() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `GridPosition Robot::home_position() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `usize Robot::tasks_assigned() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `sp<Pathfinder> Robot::pathfinder() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `void Robot::set_status(RobotStatus status);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `void Robot::set_position(GridPosition position);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `void Robot::set_home_position(GridPosition position);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `void Robot::set_pathfinder(sp<Pathfinder> pathfinder);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `void Robot::increment_tasks();`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

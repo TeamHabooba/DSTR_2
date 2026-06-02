@@ -1,42 +1,47 @@
-﻿# ``src/common/storage/storage.cpp``
+﻿# `src/common/storage/storage.cpp`
 
 ## Purpose
-Storage collection for items in storage cells.
+Storage implementation using linear item-id search over Array and duplicate-id prevention on insert.
 
 ## Module
-``common``
+`common/storage`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``storage.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"storage.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+Storage keeps Item values in Array. Since names are not unique, identity operations search by item_id, while the CLI builds a separate item index for name/location search.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-- ``storage_id Storage::id() const { return id_; }``
-- ``usize Storage::size() const { return items_.size(); }``
-- ``bool Storage::empty() const { return items_.empty(); }``
-- ``Result<Item> Storage::item_at(usize index) const {``
-- ``return Ok(items_.unchecked_at(index));``
-- ``Result<Item> Storage::find_item(item_id id) const {``
-- ``return Ok(items_.unchecked_at(index.value()));``
-- ``Result<usize> Storage::find_item_index(item_id id) const {``
-- ``return Ok(i);``
-- ``Result<void> Storage::add_item(const Item& item) {``
-- ``return Err(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_STORAGE_ITEM_EXISTS));``
-- ``return Ok();``
-- ``Result<void> Storage::update_item(const Item& item) {``
-- ``Result<void> Storage::remove_item(item_id id) {``
-- ``void Storage::clear() {``
+- `storage_id Storage::id() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `usize Storage::size() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `bool Storage::empty() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `Result<Item> Storage::item_at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<Item> Storage::find_item(item_id id) const;`: Linearly scans items by item_id, prevents duplicate ids, and delegates physical storage changes to Array.
+- `Result<usize> Storage::find_item_index(item_id id) const;`: Linearly scans items by item_id, prevents duplicate ids, and delegates physical storage changes to Array.
+- `Result<void> Storage::add_item(const Item& item);`: Linearly scans items by item_id, prevents duplicate ids, and delegates physical storage changes to Array.
+- `Result<void> Storage::update_item(const Item& item);`: Linearly scans items by item_id, prevents duplicate ids, and delegates physical storage changes to Array.
+- `Result<void> Storage::remove_item(item_id id);`: Linearly scans items by item_id, prevents duplicate ids, and delegates physical storage changes to Array.
+- `void Storage::clear();`: Resets the backing container state so later operations start from an empty collection.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

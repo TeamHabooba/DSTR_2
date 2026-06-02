@@ -1,37 +1,46 @@
-﻿# ``src/common/cell/cell.cpp``
+﻿# `src/common/cell/cell.cpp`
 
 ## Purpose
-Warehouse cell model and storage-capable cell specialization.
+Cell implementation with id/type/walkability data and StorageCell specialization that exposes embedded storage.
 
 ## Module
-``common``
+`common/cell`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``cell.h``
-- ``utility``
+### Standard Library
+- `<utility>`
+
+### Project Files
+- `"cell.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+AreaLayout stores Cell polymorphically. StorageCell derives from Cell, fixes the type to storage semantics, and carries a Storage instance beside base cell state.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-- ``entity_id Cell::id() const { return id_; }``
-- ``CellType Cell::type() const { return type_; }``
-- ``bool Cell::walkable() const { return walkable_; }``
-- ``void Cell::set_type(CellType type) { type_ = type; }``
-- ``void Cell::set_walkable(bool walkable) { walkable_ = walkable; }``
-- ``sp<Cell> Cell::clone() const {``
-- ``Storage& StorageCell::storage() { return storage_; }``
-- ``const Storage& StorageCell::storage() const { return storage_; }``
-- ``sp<Cell> StorageCell::clone() const {``
+- `entity_id Cell::id() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `CellType Cell::type() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `bool Cell::walkable() const;`: Reads the cell type/walkability flag through the layout API and treats invalid positions as not walkable.
+- `void Cell::set_type(CellType type);`: Updates the graph-backed cell, rebuilds layout connectivity, and reports validation failures as Result errors.
+- `void Cell::set_walkable(bool walkable);`: Reads the cell type/walkability flag through the layout API and treats invalid positions as not walkable.
+- `sp<Cell> Cell::clone() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Storage& StorageCell::storage();`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `const Storage& StorageCell::storage() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `sp<Cell> StorageCell::clone() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

@@ -1,28 +1,38 @@
-﻿# ``src/common/graph/graph.cpp``
+﻿# `src/common/graph/graph.cpp`
 
 ## Purpose
-Graph data structure used by warehouse layout and pathfinding.
+Non-template Graph translation unit kept for project structure consistency; template behavior lives in graph.inl.
 
 ## Module
-``common``
+`common/graph`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``graph.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"graph.h"`
 
 ## Namespaces
-No namespace declaration was found in this file.
+- (none declared)
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+Graph stores nodes in an Array of NodeSlot values. Each NodeId contains a slot index and generation; validation checks both, so removed/reused slots cannot be accessed through old ids. Edges live in each Node as adjacency arrays.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-No function or method declarations/definitions were detected by the documentation scanner.
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: does not follow the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

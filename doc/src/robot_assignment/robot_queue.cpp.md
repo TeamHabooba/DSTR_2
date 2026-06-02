@@ -1,39 +1,48 @@
-﻿# ``src/robot_assignment/robot_queue.cpp``
+﻿# `src/robot_assignment/robot_queue.cpp`
 
 ## Purpose
-Robot assignment queue and robot availability management.
+RobotQueue implementation: stores robots in circular order, finds robots by id, rotates available robots, and updates status/pathfinder data.
 
 ## Module
-``robot_assignment``
+`robot_assignment`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``robot_queue.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"robot_queue.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+RobotQueue wraps a CircularQueue and searches by robot_id when updating status or assigning pathfinders. Assignment rotates through robots so available robots are selected in queue order.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-- ``usize RobotQueue::size() const { return queue_.size(); }``
-- ``bool RobotQueue::is_empty() const { return queue_.is_empty(); }``
-- ``bool RobotQueue::is_full() const { return queue_.is_full(); }``
-- ``const Robot& RobotQueue::robot_at(usize index) const { return queue_.at(index); }``
-- ``Robot& RobotQueue::robot_at(usize index) { return queue_.at(index); }``
-- ``Result<void> RobotQueue::enqueue(Robot robot) {``
-- ``Result<robot_id> RobotQueue::assign_next() {``
-- ``return Ok(assigned_id);``
-- ``Result<void> RobotQueue::set_robot_status(robot_id id, RobotStatus status) {``
-- ``return Ok();``
-- ``Result<void> RobotQueue::set_robot_pathfinder(robot_id id, sp<Pathfinder> pathfinder) {``
-- ``void RobotQueue::clear() {``
+- `RobotQueue::RobotQueue() noexcept : queue_;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `usize RobotQueue::size() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `bool RobotQueue::is_empty() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `bool RobotQueue::is_full() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `const Robot& RobotQueue::robot_at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Robot& RobotQueue::robot_at(usize index);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<void> RobotQueue::enqueue(Robot robot);`: Moves the next available value through the queue workflow while preserving Result-based error reporting.
+- `Result<robot_id> RobotQueue::assign_next();`: Moves the next available value through the queue workflow while preserving Result-based error reporting.
+- `Result<void> RobotQueue::set_robot_status(robot_id id, RobotStatus status);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `Result<void> RobotQueue::set_robot_pathfinder(robot_id id, sp<Pathfinder> pathfinder);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `void RobotQueue::clear();`: Resets the backing container state so later operations start from an empty collection.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

@@ -1,39 +1,40 @@
-﻿# ``src/common/circular_queue.h``
+﻿# `src/common/circular_queue.h`
 
 ## Purpose
-Fixed-capacity circular queue used for robot assignment rotation.
+Fixed-capacity circular queue template used where rotation and bounded storage are required.
 
 ## Module
-``common``
+`common`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-- ``common/aliases/aliases.h``
-- ``common/result.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `<common/aliases/aliases.h>`
+- `<common/result.h>`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-- ``class CircularQueue``
+## How It Works
+Queue stores values in an Array and uses front_ as a logical offset. Dequeue advances front_ and compacts the remaining values only after enough consumed elements accumulate.
+
+## Types, Structs, Enums, And Aliases
+- `class CircularQueue`: Bounded ring buffer. It keeps front/rear positions and wraps indexes with modulo arithmetic instead of shifting elements.
 
 ## Fields
-- ``head_index_``
-- ``size_``
+- `head_index_`: Internal state used by the file API or domain object.
+- `size_`: Tracks the number of currently active elements.
 
 ## Functions And Methods
-- ``usize size() const { return size_; }``
-- ``bool is_empty() const { return size_ == 0; }``
-- ``bool is_full() const { return size_ >= MAX_QUEUE_SIZE; }``
-- ``const T& at(usize index) const { return items_[index]; }``
-- ``T& at(usize index) { return items_[index]; }``
-- ``void clear() {``
-- ``Result<void> enqueue(T item) {``
-- ``return Ok();``
-- ``usize circular_index(usize offset) const {``
-- ``void set_head(usize index) {``
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

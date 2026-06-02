@@ -1,37 +1,46 @@
-﻿# ``src/common/item/item.cpp``
+﻿# `src/common/item/item.cpp`
 
 ## Purpose
-Item entity stored in warehouse storage cells.
+Item implementation with value-style constructors, id-based equality, move-aware setters, and accessors.
 
 ## Module
-``common``
+`common/item`
 
 ## File Kind
-Source file: contains non-template implementation details.
+Source file: defines non-template behavior or the executable entry point.
 
 ## Includes
-- ``item.h``
-- ``utility``
+### Standard Library
+- `<utility>`
+
+### Project Files
+- `"item.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+Item is a small value object. Constructors initialize metadata, equality compares ids, and setters replace fields without owning external resources.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-- ``id_``
+- (none declared in this file)
 
 ## Functions And Methods
-- ``item_id Item::id() const { return id_; }``
-- ``string Item::name() const { return name_; }``
-- ``string Item::description() const { return description_; }``
-- ``usize Item::quantity() const { return quantity_; }``
-- ``GridPosition Item::location() const { return location_; }``
-- ``void Item::set_name(string name) { name_ = std::move(name); }``
-- ``void Item::set_description(string description) { description_ = std::move(description); }``
-- ``void Item::set_quantity(usize quantity) { quantity_ = quantity; }``
-- ``void Item::set_location(GridPosition location) { location_ = location; }``
+- `item_id Item::id() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `string Item::name() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `string Item::description() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `usize Item::quantity() const;`: Returns stored state directly without extra allocation or ownership transfer.
+- `GridPosition Item::location() const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `void Item::set_name(string name);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `void Item::set_description(string description);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `void Item::set_quantity(usize quantity);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
+- `void Item::set_location(GridPosition location);`: Updates one field directly; callers keep validation at higher-level workflow boundaries when required.
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+

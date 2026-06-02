@@ -1,45 +1,54 @@
-﻿# ``src/common/common.h``
+﻿# `src/common/common.h`
 
 ## Purpose
-Project source file.
+Common facade header that gathers aliases, strings, math, enums, containers, domain objects, graph, and time utilities under one project include.
 
 ## Module
-``common``
+`common`
 
 ## File Kind
-Header file: contains declarations and public API contracts.
+Header file: declares public API, types, aliases, constants, or inline template entry points.
 
 ## Includes
-- ``mutex``
-- ``type_traits``
-- ``./strings/strings.h``
-- ``./aliases/aliases.h``
-- ``./math.h``
-- ``./enums.h``
-- ``./string_helpers.h``
-- ``./result.h``
-- ``./position.h``
-- ``./array/array.h``
-- ``./queue.h``
-- ``./stack/stack.h``
-- ``./item/item.h``
-- ``./storage/storage.h``
-- ``./cell/cell.h``
-- ``./robot/robot.h``
-- ``./graph/graph.h``
-- ``./time.h``
+### Standard Library
+- `<mutex>`
+- `<type_traits>`
+
+### Project Files
+- `"./strings/strings.h"`
+- `"./aliases/aliases.h"`
+- `"./math.h"`
+- `"./enums.h"`
+- `"./string_helpers.h"`
+- `"./result.h"`
+- `"./position.h"`
+- `"./array/array.h"`
+- `"./queue.h"`
+- `"./stack/stack.h"`
+- `"./item/item.h"`
+- `"./storage/storage.h"`
+- `"./cell/cell.h"`
+- `"./robot/robot.h"`
+- `"./graph/graph.h"`
+- `"./time.h"`
 
 ## Namespaces
-No namespace declaration was found in this file.
+- (none declared)
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+The file follows the project pattern of small modules, dstr namespace ownership, project aliases, and explicit Result-returning APIs for fallible behavior.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-No function or method declarations/definitions were detected by the documentation scanner.
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: does not follow the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows where applicable; this file has little or no typed API surface.
+

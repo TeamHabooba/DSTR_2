@@ -1,31 +1,39 @@
-﻿# ``src/common/stack/stack.inl``
+﻿# `src/common/stack/stack.inl`
 
 ## Purpose
-Self-implemented stack container for reverse path tracking.
+Stack implementation that treats the last Array element as the top and wraps empty/index failures in Result.
 
 ## Module
-``common``
+`common/stack`
 
 ## File Kind
-Inline implementation file: contains template method definitions included by headers.
+Template implementation file: included by its matching header so template definitions are visible at compile time.
 
 ## Includes
-- ``stack.h``
+### Standard Library
+- (none)
+
+### Project Files
+- `"stack.h"`
 
 ## Namespaces
-- ``dstr``
+- `dstr`
 
-## Types
-No class, struct, or enum declarations were detected.
+## How It Works
+Stack delegates storage to Array and treats the last element as the top, so push/pop are simple append/remove-last operations.
+
+## Types, Structs, Enums, And Aliases
+- (none declared in this file)
 
 ## Fields
-No private-style fields with trailing underscore were detected.
+- (none declared in this file)
 
 ## Functions And Methods
-- ``return Ok();``
-- ``return Ok(value);``
-- ``return Ok(items_.unchecked_at(items_.size() - 1));``
-- ``return Ok(items_.unchecked_at(index));``
+- (none declared in this file)
 
-## Notes
-This file follows the project convention that all source code belongs to the ``dstr`` namespace, with helper implementation details kept local to their ``.cpp`` file when appropriate.
+## Project Convention Compliance
+- Namespace: follows the project-wide dstr namespace convention.
+- String ownership: follows; no standalone user-facing string literals are introduced here.
+- Type vocabulary: follows; public surfaces prefer project aliases and domain id aliases where applicable.
+- Template placement: follows; template definitions are kept in .inl and included by the matching header.
+
