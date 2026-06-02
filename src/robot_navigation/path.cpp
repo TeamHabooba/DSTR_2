@@ -5,8 +5,7 @@
 namespace dstr {
 
 
-  Path::Path()
-      : steps_{} {}
+  Path::Path() : steps_{} {}
 
   usize Path::size() const { return steps_.size(); }
   bool Path::empty() const { return steps_.empty(); }

@@ -18,28 +18,39 @@ namespace dstr {
  
    public:
     // Ctors
+
     Robot() noexcept;
     Robot(string id, RobotStatus status);
     Robot(const Robot& other);
     Robot(Robot&& other) noexcept;
- 
+
+
     // Comparison ops
+
     bool operator==(const Robot& other) const;
     bool operator!=(const Robot& other) const;
- 
+
+
     // Assignment ops
+
     Robot& operator=(const Robot& other);
     Robot& operator=(Robot&& other) noexcept;
- 
+
+
     // Getters
+
     string id() const;
     RobotStatus status() const;
     usize tasks_assigned() const;
- 
+
+
     // Setters
+
     void set_status(RobotStatus status);
- 
+
+
     // Domain methods
+
     void increment_tasks();
   };
  

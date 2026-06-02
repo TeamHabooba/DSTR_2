@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <common/aliases/aliases.h>
 #include <common/result.h>
 #include <common/array/array.h>
@@ -30,5 +31,6 @@ namespace dstr {
 
 
 }
+
 
 #include "queue.inl"

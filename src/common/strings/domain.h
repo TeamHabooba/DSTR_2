@@ -8,6 +8,7 @@ namespace dstr::strings {
 
 
 // =====Generic text
+
 SCSTR TXT_EMPTY = "";
 SCSTR TXT_SPACE = " ";
 SCSTR TXT_COMMA = ",";
@@ -16,7 +17,9 @@ SCSTR TXT_RIGHT_BRACKET_SPACE = "] ";
 SCSTR TXT_TRUE = "true";
 SCSTR TXT_FALSE = "false";
 
+
 // =====Enum values
+
 SCSTR VAL_AVAILABLE = "AVAILABLE";
 SCSTR VAL_BUSY = "BUSY";
 SCSTR VAL_MAINTENANCE = "MAINTENANCE";
@@ -32,7 +35,20 @@ SCSTR VAL_DROP_OFF = "DROP_OFF";
 SCSTR VAL_PICK_UP = "PICK_UP";
 SCSTR VAL_STATION = "STATION";
 
+
+// =====Cell symbols
+
+SCCHR CELL_SYM_EMPTY = '.';
+SCCHR CELL_SYM_ROBOT = 'R';
+SCCHR CELL_SYM_OBSTACLE = '#';
+SCCHR CELL_SYM_DROP_OFF = 'D';
+SCCHR CELL_SYM_PICK_UP = 'P';
+SCCHR CELL_SYM_STATION = 'S';
+SCCHR CELL_SYM_NONE = '?';
+
+
 // =====Domain errors
+
 SCSTR ERR_QUEUE_FULL = "Queue is full";
 SCSTR ERR_QUEUE_EMPTY = "Queue is empty";
 SCSTR ERR_QUEUE_INDEX_RANGE = "Queue index is out of range";
@@ -68,7 +84,9 @@ SCSTR ERR_FILE_LAYOUT_EMPTY = "Layout file is empty";
 SCSTR ERR_FILE_LAYOUT_HEADER = "Layout header is invalid";
 SCSTR ERR_FILE_LAYOUT_DIMENSIONS = "Layout dimensions are invalid";
 
+
 // =====File text
+
 SCSTR CSV_ROBOTS_HEADER = "id,status,row,col,home_row,home_col,tasks\n";
 SCSTR CSV_TASKS_HEADER = "id,item,robot,pickup_row,pickup_col,dropoff_row,dropoff_col,status\n";
 SCSTR CSV_ITEMS_HEADER = "row,col,storage,item,name,description,quantity\n";
@@ -95,7 +113,9 @@ SCSTR JSON_CLOSE = "}\n";
 SCSTR JSON_ROW_PREFIX = "    \"";
 SCSTR JSON_ROW_SUFFIX = "\"";
 
+
 // =====Time errors
+
 SCSTR ERR_TIME_MONTH_RANGE = "Month must be in range [1, 12]";
 SCSTR ERR_TIME_DAY_RANGE = "Day must be in range [1, 31]";
 SCSTR ERR_TIME_HOUR_RANGE = "Hours must be in range [0, 23]";

@@ -1,13 +1,16 @@
 // cОmmon.h
-// Pragmas
+// =====Pragmas
 #pragma once
 
 
-// Defines
+// =====Defines
+
 // Conditional compilation flags
 #define DSTR_THREAD_SAFE_TIME
 #define USE_CUSTOM_DATE_TIME
 
+
+// =====Includes
 
 // C++
 #include <mutex>
@@ -16,10 +19,9 @@
 // Project Headers
 #include "./strings/strings.h"
 #include "./aliases/aliases.h"
-#include "./math.h"             // <cmath>
-#include "./enums.h"            // "./aliases.h" <- {<optional>, <memory>, "./strings.h"}
+#include "./math.h"            
+#include "./enums.h"            
 #include "./string_helpers.h"
-//#include "./time.h"             // {<ctime>, <string>, <sstream>, <iomanip>, "./aliases.h" <- {<cstdint>, <optional>, <memory>, <chrono>}
 #include "./result.h"
 #include "./position.h"
 #include "./array/array.h"
@@ -35,5 +37,5 @@
 #include "./time.h"
 #endif
 
-// Dangerous using. Remove later.
+// Dangerous usings. Remove later.
 using namespace std::string_literals;

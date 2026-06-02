@@ -6,6 +6,7 @@ namespace dstr {
 
 
 // =====Constructors
+
 AreaLayout::AreaLayout(usize rows, usize cols)
     : cells_{std::make_shared<Graph<sp<Cell>, i32>>(1)},
       cell_ids_{rows * cols},
@@ -19,6 +20,7 @@ AreaLayout::AreaLayout() : AreaLayout(ROWS_DEFAULT, COLS_DEFAULT) {}
 
 
 // =====Getters
+
 usize AreaLayout::rows() const { return rows_; }
 usize AreaLayout::cols() const { return cols_; }
 u64 AreaLayout::version() const { return version_; }
@@ -70,6 +72,7 @@ Result<Storage> AreaLayout::storage_at(GridPosition position) const {
 
 
 // =====Domain methods
+
 Result<void> AreaLayout::resize(usize rows, usize cols) {
   if (rows == 0 || cols == 0) {
     return Err(ErrorCode::INVALID_DIMENSIONS, string(strings::ERR_LAYOUT_DIMENSIONS));
@@ -130,9 +133,9 @@ void AreaLayout::print(std::ostream& os) const {
   for (usize row = 0; row < rows_; row++) {
     for (usize col = 0; col < cols_; col++) {
       auto type = type_at(GridPosition(row, col));
-      os << (type ? cell_symbol(type.value()) : '?') << ' ';
+      os << (type ? cell_symbol(type.value()) : strings::CELL_SYM_NONE) << string(strings::TXT_SPACE);
     }
-    os << '\n';
+    os << string(strings::NL);
   }
 }
 
@@ -190,20 +193,20 @@ bool AreaLayout::should_be_walkable(CellType type) const {
 char AreaLayout::cell_symbol(CellType type) const {
   switch (type) {
   case CellType::EMPTY:
-    return '.';
+    return strings::CELL_SYM_EMPTY;
   case CellType::ROBOT:
-    return 'R';
+    return strings::CELL_SYM_ROBOT;
   case CellType::OBSTACLE:
-    return '#';
+    return strings::CELL_SYM_OBSTACLE;
   case CellType::DROP_OFF:
-    return 'D';
+    return strings::CELL_SYM_DROP_OFF;
   case CellType::PICK_UP:
-    return 'P';
+    return strings::CELL_SYM_PICK_UP;
   case CellType::STATION:
-    return 'S';
+    return strings::CELL_SYM_STATION;
   case CellType::NONE:
   default:
-    return '?';
+    return strings::CELL_SYM_NONE;
   }
 }
 

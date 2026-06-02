@@ -36,7 +36,11 @@ namespace dstr {
   };
 
 
-  // Node slot. Contains and owns a node directly without std::optional or pointers.
+  /// <summary>
+  /// Node slot. Contains and owns a node directly without std::optional or pointers.
+  /// </summary>
+  /// <typeparam name="T">Node content type.</typeparam>
+  /// <typeparam name="W">Weight type. dstr::i32 by default.</typeparam>
   template<typename T, typename W>
   struct NodeSlot {
     Node<T, W> node;
@@ -47,7 +51,11 @@ namespace dstr {
   };
 
 
-  // Graph edge. References a node using NodeId.
+  /// <summary>
+  /// Graph edge. References a node using NodeId.
+  /// </summary>
+  /// <typeparam name="T">Node content type.</typeparam>
+  /// <typeparam name="W">Weight type. dstr::i32 by default.</typeparam>
   template<typename T, typename W>
   class Edge {
     W weight_;
@@ -82,7 +90,6 @@ namespace dstr {
 
   /// <summary>
   /// Graph class. Represented physically as a dynamic array. Physical representation is private.
-  ///  
   /// </summary>
   /// <typeparam name="T">Node content type.</typeparam>
   /// <typeparam name="W">Weight type. dstr::i32 by default.</typeparam>
@@ -135,5 +142,6 @@ namespace dstr {
 
 
 }
+
 
 #include "graph.inl"

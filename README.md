@@ -9,6 +9,7 @@ Group 32
 - [Task Division](#task-division)
 - [Assignment Question](#assignment-question)
 - [Requirements](#requirements)
+- [Build](#build)
 - [Guidelines for Team Members](#guidelines-for-team-members)
 - [Q&A](#q--a)
 
@@ -68,6 +69,38 @@ Key constraints from the assignment:
 - No STL built-in containers (`<list>`, `<vector>`, etc.) — all containers must be self-implemented.
 - Each member must use at least one suitable data structure with appropriate algorithms.
 - A single C++ prototype is submitted as a group; grading is individual.
+
+## Build
+
+The project uses CMake and C++20. The executable target is `DSTR`.
+
+### Console build with CMake
+
+From the repository root:
+
+```powershell
+cmake -S . -B build
+cmake --build build
+.\build\Debug\DSTR.exe
+```
+
+### Build and run with Visual Studio
+
+1. Open Visual Studio.
+2. Choose **File -> Open -> Project/Solution** or **File -> Open -> CMake Project**.
+3. Go to the repository root directory and select `CMakeLists.txt`.
+4. Wait until CMake configuration finishes.
+5. Select the `DSTR.exe` target.
+6. Press **Ctrl+F5** to run without debugging, or **F5** to run with debugging.
+
+### Sample states
+
+The `data/` directory contains some ready-to-load JSON states:
+- `data/default_state.json`
+- `data/blocked_route_state.json`
+- `data/multi_robot_state.json`
+
+Load them from the CLI through `Save / load files -> Load full state JSON`.
 
 ## Submission and Presentation
 

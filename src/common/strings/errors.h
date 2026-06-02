@@ -22,18 +22,6 @@ namespace dstr::strings {
   SCSTR ERR_FILE_NO_RECORDS = "No valid records found in file: ";
 
   SCSTR ERR_LINE = "Line ";
-  SCSTR ERR_LINE_MISSING_RID = ": missing ResidentID.";
-  SCSTR ERR_LINE_INVALID_RID = ": invalid ResidentID value.";
-  SCSTR ERR_LINE_MISSING_AGE = ": missing Age.";
-  SCSTR ERR_LINE_INVALID_AGE = ": invalid Age value.";
-  SCSTR ERR_LINE_MISSING_MOT = ": missing ModeOfTransport.";
-  SCSTR ERR_LINE_INVALID_MOT = ": invalid ModeOfTransport value.";
-  SCSTR ERR_LINE_MISSING_DD = ": missing DailyDistance.";
-  SCSTR ERR_LINE_INVALID_DD = ": invalid DailyDistance value.";
-  SCSTR ERR_LINE_MISSING_CEF = ": missing CarbonEmissionFactor.";
-  SCSTR ERR_LINE_INVALID_CEF = ": invalid CarbonEmissionFactor value.";
-  SCSTR ERR_LINE_MISSING_ADM = ": missing AvgDaysPerMonth.";
-  SCSTR ERR_LINE_INVALID_ADM = ": invalid AvgDaysPerMonth value.";
 
 
 }
