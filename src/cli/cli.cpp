@@ -711,76 +711,76 @@ namespace dstr {
   } // namespace
 
 
-// =====Helpers
+  // =====Helpers
 
-Result<int> get_option(std::istream& is) {
-  string soption;
-  int option = -1;
-  if (!std::getline(is, soption)) {
-    return Ok(0);
-  }
-  try {
-    option = std::stoi(trim(soption));
-  }
-  catch (const std::invalid_argument&) {
-    return Err<int>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_NOT_NUMBER));
-  }
-  if (option < 0) {
-    return Err<int>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_MENU_OPT_BELOW_ZERO));
-  }
-  return Ok(option);
-}
-
-
-// =====Entry point
-
-Result<void> cli_start(
-  [[maybe_unused]] char* argv[],
-  [[maybe_unused]] int argc,
-  AppState& state
-) {
-  bool running = true;
-  while (running) {
-    print_main_menu(state);
-    auto option = get_option(state.is);
-    if (!option) {
-      state.os << strings::MSG_ERROR_PREFIX << option.error().message() << strings::NL;
-      continue;
+  Result<int> get_option(std::istream& is) {
+    string soption;
+    int option = -1;
+    if (!std::getline(is, soption)) {
+      return Ok(0);
     }
-    switch (option.value()) {
-    case 0:
-      running = false;
-      break;
-    case 1:
-      layout_menu(state);
-      break;
-    case 2:
-      robots_menu(state);
-      break;
-    case 3:
-      inventory_menu(state);
-      break;
-    case 4:
-      tasks_menu(state);
-      break;
-    case 5:
-      show_guide(state);
-      break;
-    case 6:
-      show_credits(state);
-      break;
-    case 7:
-      files_menu(state);
-      break;
-    default:
-      state.os << strings::MSG_INVALID_OPTION << strings::NL;
-      break;
+    try {
+      option = std::stoi(trim(soption));
     }
-    state.first_run = false;
+    catch (const std::invalid_argument&) {
+      return Err<int>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_NOT_NUMBER));
+    }
+    if (option < 0) {
+      return Err<int>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_MENU_OPT_BELOW_ZERO));
+    }
+    return Ok(option);
   }
-  state.os << strings::MSG_BYE << strings::NL;
-  return Ok();
-}
+
+
+  // =====Entry point
+
+  Result<void> cli_start(
+    [[maybe_unused]] char* argv[],
+    [[maybe_unused]] int argc,
+    AppState& state
+  ) {
+    bool running = true;
+    while (running) {
+      print_main_menu(state);
+      auto option = get_option(state.is);
+      if (!option) {
+        state.os << strings::MSG_ERROR_PREFIX << option.error().message() << strings::NL;
+        continue;
+      }
+      switch (option.value()) {
+      case 0:
+        running = false;
+        break;
+      case 1:
+        layout_menu(state);
+        break;
+      case 2:
+        robots_menu(state);
+        break;
+      case 3:
+        inventory_menu(state);
+        break;
+      case 4:
+        tasks_menu(state);
+        break;
+      case 5:
+        show_guide(state);
+        break;
+      case 6:
+        show_credits(state);
+        break;
+      case 7:
+        files_menu(state);
+        break;
+      default:
+        state.os << strings::MSG_INVALID_OPTION << strings::NL;
+        break;
+      }
+      state.first_run = false;
+    }
+    state.os << strings::MSG_BYE << strings::NL;
+    return Ok();
+  }
 
 
 } // namespace dstr

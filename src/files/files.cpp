@@ -10,6 +10,7 @@ namespace dstr {
 
   namespace {
 
+
     string status_to_string(RobotStatus status) {
       if (status == RobotStatus::AVAILABLE) {
         return string(strings::VAL_AVAILABLE);
@@ -128,6 +129,7 @@ namespace dstr {
     Result<void> open_failed(const string& path) {
       return Err(ErrorCode::IO_ERROR, string(strings::ERR_CANT_OPEN_FILE) + path);
     }
+
 
   } // namespace
 
