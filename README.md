@@ -41,7 +41,7 @@ The system is built around four core data structure concepts: **Stack, Queue, Ci
 
 | Module | Assignee | Data Structure(s) |
 |---|---|---|
-| General functionality & Order Management | Alex (TP081705) | Queue |
+| General functionality & Order Management | Alex (TP081705) | Graph |
 | Robot Assignment | Moha (TP082459) | Circular Queue |
 | Robot Navigation and Path Tracking | Leo (TP082557) | Stack |
 
