@@ -2,16 +2,10 @@
 #pragma once
 
 
-// C
-
-// C++
 #include <optional>
 #include <memory>
 #include <chrono>
 
-// Libs
-
-// Project Files
 #include "./numeric.h"
 #include <common/strings/strings.h>
 
@@ -20,6 +14,7 @@ namespace dstr {
 
     
   // General aliases
+
   template <typename T>
   using up = std::unique_ptr<T>;
 
@@ -41,13 +36,11 @@ namespace dstr {
 
   using optional_tm = std::optional<std::tm>;
 
-  using entity_id = u32;
+  using entity_id = usize;
   using item_id = entity_id;
   using storage_id = entity_id;
   using robot_id = entity_id;
   using task_id = entity_id;
-
-  //using json = nlohmann::json;
 
 
 } // namespace dSCSTR

@@ -33,6 +33,7 @@ namespace dstr {
 		STATION
 	};
 
+	// 4 possible Task states
   enum class TaskStatus {
     PENDING,
     ASSIGNED,

@@ -98,7 +98,6 @@ namespace dstr {
         return Ok(NodeId{i, slot.generation});
       }
     }
-
     NodeSlot<T, W> slot;
     slot.node = Node<T, W>(value);
     slot.occupied = true;
@@ -352,4 +351,6 @@ namespace dstr {
     }
     return Ok();
   }
+
+
 }

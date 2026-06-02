@@ -2,12 +2,14 @@
 
 #pragma once
 
-#include "result.h"
+
 #include <cstdint>
 #include <cstring>
 #include <string>
 #include <ctime>
 #include <chrono>
+
+#include "result.h"
 
 
 namespace dstr {
@@ -39,10 +41,12 @@ namespace dstr {
 
   public:
     // Ctors
+
     Time() noexcept : Time(1970, 1, 1, 0, 0, 0, 0, 0, 0) {}
 
 
     // Static fabric instead of public ctors
+
     static Result<Time> create(uint16_t year, uint8_t month, uint8_t day,
         uint32_t milliseconds_from_midnight,
         int16_t timezone_offset_minutes = 0,
@@ -63,6 +67,7 @@ namespace dstr {
 
 
     // Rule of five
+
     Time(const Time&) = default;
     Time(Time&&) noexcept = default;
     Time& operator=(const Time&) = default;
@@ -71,6 +76,7 @@ namespace dstr {
 
 
     // Getters
+
     uint16_t year() const noexcept { return year_; }
     uint8_t month() const noexcept { return month_; }
     uint8_t day() const noexcept { return day_; }
@@ -86,6 +92,7 @@ namespace dstr {
 
 
     // Setters + validation
+
     Result<void> year(uint16_t value) noexcept {
       year_ = value;
       return validate();
@@ -202,6 +209,7 @@ namespace dstr {
 
 
     // Validation
+
     static bool valid_timezone_offset(int16_t timezone_offset_minutes) noexcept {
       return timezone_offset_minutes >= -720 && timezone_offset_minutes <= 840;
     }
@@ -232,6 +240,7 @@ namespace dstr {
 
 
     // Depricated
+
     std::string validate_legacy() const {
       auto result = validate();
       if (result.is_ok()) {
@@ -242,6 +251,7 @@ namespace dstr {
 
 
     // Change to another timezone
+
     Result<void> move_to_timezone(int16_t target_timezone_offset_minutes) noexcept {
       if (!valid_timezone_offset(target_timezone_offset_minutes)) {
         return Err(ErrorCode::VALIDATION_FAILED, std::string(strings::ERR_TIME_TARGET_TZ));
@@ -264,6 +274,7 @@ namespace dstr {
 
 
     // From/to std time types
+
     static Result<Time> from_tm(const std::tm& tm_info, int16_t tz_offset = 0) noexcept {
       Time result;
       result.year_ = tm_info.tm_year + 1900;
@@ -328,6 +339,7 @@ namespace dstr {
     }
 
     // system_clock processing
+
     static Result<Time> from_system_clock(const std::chrono::system_clock::time_point& tp,
         int16_t tz_offset = 0) {
       std::time_t t = std::chrono::system_clock::to_time_t(tp);
@@ -376,7 +388,9 @@ namespace dstr {
       }
     }
 
+
     // Serialization
+
     void to_bytes(uint8_t* buffer) const noexcept {
       std::memcpy(buffer, this, sizeof(Time));
     }
@@ -394,7 +408,9 @@ namespace dstr {
       return Ok(t);
     }
 
+
     // Comparison ops
+
     bool operator==(const Time& other) const noexcept {
       if (this == &other) return true;
       return std::memcmp(this, &other, sizeof(Time)) == 0;
@@ -427,6 +443,7 @@ namespace dstr {
 
 
     // String values
+
     std::string to_string() const {
       char buffer[128];
       std::snprintf(buffer, sizeof(buffer),
@@ -453,6 +470,7 @@ namespace dstr {
 
 
     // Current time
+
     static Result<Time> now() {
       auto t_now = std::chrono::system_clock::now();
       return from_system_clock(t_now);

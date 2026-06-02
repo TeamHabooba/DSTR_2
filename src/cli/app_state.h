@@ -10,6 +10,8 @@
 
 
 namespace dstr {
+
+
   struct AppState {
     std::ostream& os;
     std::istream& is;
@@ -31,4 +33,6 @@ namespace dstr {
     }
 
   };
+
+
 }

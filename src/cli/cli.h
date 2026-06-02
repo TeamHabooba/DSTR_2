@@ -2,23 +2,17 @@
 
 
 #include "./app_state.h"
-#include <common/common.h>
 
 
 namespace dstr {
 
 
-  // Utility
-
+  // Utility function prototype
   Result<int> get_option(std::istream& is);
 
 
-  // Entry point
-
+  // Application UI (CLI) entry point
   Result<void> cli_start(char* argv[], int argc, AppState& state);
 
 
-  // Top-level menus
-
-
-} // namespace dstr
+}
