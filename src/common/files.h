@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 
 #include <common/types.h>
 #include <common/domain_types.h>
