@@ -107,86 +107,6 @@ namespace dstr {
   void Item::set_quantity(usize quantity) { quantity_ = quantity; }
   void Item::set_location(GridPosition location) { location_ = location; }
 
-  class Storage;
-
-  class Cell {
-  private:
-    entity_id id_;
-    CellType type_;
-    bool walkable_;
-
-  public:
-    Cell() noexcept;
-    Cell(entity_id id, CellType type, bool walkable) noexcept;
-    virtual ~Cell() = default;
-
-    entity_id id() const;
-    CellType type() const;
-    bool walkable() const;
-
-    void set_type(CellType type);
-    void set_walkable(bool walkable);
-
-    virtual sp<Cell> clone() const;
-  };
-
-
-  class StorageCell : public Cell {
-  private:
-    Storage storage_;
-
-  public:
-    StorageCell() noexcept;
-    StorageCell(entity_id id, Storage storage);
-
-    Storage& storage();
-    const Storage& storage() const;
-
-    sp<Cell> clone() const override;
-  };
-
-
-
-  Cell::Cell() noexcept
-    : id_{ 0 },
-    type_{ CellType::EMPTY },
-    walkable_{ true } {
-  }
-
-  Cell::Cell(entity_id id, CellType type, bool walkable) noexcept
-    : id_{ id },
-    type_{ type },
-    walkable_{ walkable } {
-  }
-
-  entity_id Cell::id() const { return id_; }
-  CellType Cell::type() const { return type_; }
-  bool Cell::walkable() const { return walkable_; }
-
-  void Cell::set_type(CellType type) { type_ = type; }
-  void Cell::set_walkable(bool walkable) { walkable_ = walkable; }
-
-  sp<Cell> Cell::clone() const {
-    return std::make_shared<Cell>(*this);
-  }
-
-  StorageCell::StorageCell() noexcept
-    : Cell{ 0, CellType::PICK_UP, true },
-    storage_{} {
-  }
-
-  StorageCell::StorageCell(entity_id id, Storage storage)
-    : Cell{ id, CellType::PICK_UP, true },
-    storage_{ std::move(storage) } {
-  }
-
-  Storage& StorageCell::storage() { return storage_; }
-  const Storage& StorageCell::storage() const { return storage_; }
-
-  sp<Cell> StorageCell::clone() const {
-    return std::make_shared<StorageCell>(*this);
-  }
-
   class Storage {
   private:
     storage_id id_;
@@ -274,6 +194,84 @@ namespace dstr {
 
   void Storage::clear() {
     items_.clear();
+  }
+
+  class Cell {
+  private:
+    entity_id id_;
+    CellType type_;
+    bool walkable_;
+
+  public:
+    Cell() noexcept;
+    Cell(entity_id id, CellType type, bool walkable) noexcept;
+    virtual ~Cell() = default;
+
+    entity_id id() const;
+    CellType type() const;
+    bool walkable() const;
+
+    void set_type(CellType type);
+    void set_walkable(bool walkable);
+
+    virtual sp<Cell> clone() const;
+  };
+
+
+  class StorageCell : public Cell {
+  private:
+    Storage storage_;
+
+  public:
+    StorageCell() noexcept;
+    StorageCell(entity_id id, Storage storage);
+
+    Storage& storage();
+    const Storage& storage() const;
+
+    sp<Cell> clone() const override;
+  };
+
+
+
+  Cell::Cell() noexcept
+    : id_{ 0 },
+    type_{ CellType::EMPTY },
+    walkable_{ true } {
+  }
+
+  Cell::Cell(entity_id id, CellType type, bool walkable) noexcept
+    : id_{ id },
+    type_{ type },
+    walkable_{ walkable } {
+  }
+
+  entity_id Cell::id() const { return id_; }
+  CellType Cell::type() const { return type_; }
+  bool Cell::walkable() const { return walkable_; }
+
+  void Cell::set_type(CellType type) { type_ = type; }
+  void Cell::set_walkable(bool walkable) { walkable_ = walkable; }
+
+  sp<Cell> Cell::clone() const {
+    return std::make_shared<Cell>(*this);
+  }
+
+  StorageCell::StorageCell() noexcept
+    : Cell{ 0, CellType::PICK_UP, true },
+    storage_{} {
+  }
+
+  StorageCell::StorageCell(entity_id id, Storage storage)
+    : Cell{ id, CellType::PICK_UP, true },
+    storage_{ std::move(storage) } {
+  }
+
+  Storage& StorageCell::storage() { return storage_; }
+  const Storage& StorageCell::storage() const { return storage_; }
+
+  sp<Cell> StorageCell::clone() const {
+    return std::make_shared<StorageCell>(*this);
   }
 
   class Pathfinder;
