@@ -42,6 +42,15 @@ namespace dstr {
     return Err<robot_id>(ErrorCode::EMPTY_CONTAINER, string(strings::ERR_ROBOTS_UNAVAILABLE));
   }
 
+  Result<Robot> RobotQueue::robot_by_id(robot_id id) const {
+    for (usize i = 0; i < queue_.size(); i++) {
+      if (queue_.at(i).id() == id) {
+        return Ok(queue_.at(i));
+      }
+    }
+    return Err<Robot>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_ROBOT_NOT_FOUND));
+  }
+
   Result<void> RobotQueue::set_robot_status(robot_id id, RobotStatus status) {
     for (usize i = 0; i < queue_.size(); i++) {
       if (queue_.at(i).id() == id) {
@@ -52,10 +61,30 @@ namespace dstr {
     return Err<void>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_ROBOT_NOT_FOUND));
   }
 
+  Result<void> RobotQueue::set_robot_position(robot_id id, GridPosition position) {
+    for (usize i = 0; i < queue_.size(); i++) {
+      if (queue_.at(i).id() == id) {
+        queue_.at(i).set_position(position);
+        return Ok();
+      }
+    }
+    return Err<void>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_ROBOT_NOT_FOUND));
+  }
+
   Result<void> RobotQueue::set_robot_pathfinder(robot_id id, sp<Pathfinder> pathfinder) {
     for (usize i = 0; i < queue_.size(); i++) {
       if (queue_.at(i).id() == id) {
         queue_.at(i).set_pathfinder(pathfinder);
+        return Ok();
+      }
+    }
+    return Err<void>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_ROBOT_NOT_FOUND));
+  }
+
+  Result<void> RobotQueue::return_robot_home(robot_id id) {
+    for (usize i = 0; i < queue_.size(); i++) {
+      if (queue_.at(i).id() == id) {
+        queue_.at(i).set_position(queue_.at(i).home_position());
         return Ok();
       }
     }

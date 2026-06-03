@@ -15,6 +15,26 @@ namespace dstr {
 	namespace {
 
 
+		struct ExecutionSession {
+			Task task;
+			robot_id robot;
+			GridPosition station;
+			GridPosition pickup;
+			GridPosition dropoff;
+			Path station_to_pickup;
+			Path pickup_to_dropoff;
+			Path dropoff_to_station;
+			Array<GridPosition> route;
+			Stack<GridPosition> reverse_stack;
+			usize current_index = 0;
+			usize pickup_index = 0;
+			usize dropoff_index = 0;
+			usize station_index = 0;
+			bool finished = false;
+			bool cancelled = false;
+		};
+
+
 		// =====Format helpers
 
 		string cell_type_string(CellType type) {
@@ -126,6 +146,17 @@ namespace dstr {
 					}
 				}
 			}
+		}
+
+		Result<ItemIndexEntry> find_item_entry(AppState& state, item_id id) {
+			rebuild_item_index(state);
+			for (usize i = 0; i < state.item_index.size(); i++) {
+				ItemIndexEntry entry = state.item_index.unchecked_at(i);
+				if (entry.id == id) {
+					return Ok(entry);
+				}
+			}
+			return Err<ItemIndexEntry>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_TASK_ITEM_NOT_FOUND));
 		}
 
 		void refresh_next_ids(AppState& state) {
@@ -369,6 +400,369 @@ namespace dstr {
 				}
 			}
 			return matches;
+		}
+
+		void print_route_position(AppState& state, GridPosition position, bool first) {
+			if (!first) {
+				state.os << strings::TXT_ARROW;
+			}
+			print_position(state.os, position);
+		}
+
+		void print_path(AppState& state, const Path& path) {
+			for (usize i = 0; i < path.size(); i++) {
+				auto step = path.at(i);
+				if (step) {
+					print_route_position(state, step.value(), i == 0);
+				}
+			}
+			state.os << strings::NL;
+		}
+
+		void print_route(AppState& state, const Array<GridPosition>& route) {
+			for (usize i = 0; i < route.size(); i++) {
+				print_route_position(state, route.unchecked_at(i), i == 0);
+			}
+			state.os << strings::NL;
+		}
+
+		void print_reverse_stack(AppState& state, const Stack<GridPosition>& stack) {
+			state.os << strings::MSG_EXEC_REVERSE_STACK;
+			if (stack.empty()) {
+				state.os << strings::MSG_EXEC_STACK_EMPTY << strings::NL;
+				return;
+			}
+			for (usize i = stack.size(); i > 0; i--) {
+				auto step = stack.at(i - 1);
+				if (step) {
+					print_route_position(state, step.value(), i == stack.size());
+				}
+			}
+			state.os << strings::NL;
+		}
+
+		string next_checkpoint_name(const ExecutionSession& session) {
+			if (session.current_index < session.pickup_index) {
+				return string(strings::MSG_EXEC_CHECKPOINT_PICKUP);
+			}
+			if (session.current_index < session.dropoff_index) {
+				return string(strings::MSG_EXEC_CHECKPOINT_DROPOFF);
+			}
+			if (session.current_index < session.station_index) {
+				return string(strings::MSG_EXEC_CHECKPOINT_STATION);
+			}
+			return string(strings::MSG_EXEC_CHECKPOINT_DONE);
+		}
+
+		usize next_checkpoint_index(const ExecutionSession& session) {
+			if (session.current_index < session.pickup_index) {
+				return session.pickup_index;
+			}
+			if (session.current_index < session.dropoff_index) {
+				return session.dropoff_index;
+			}
+			return session.station_index;
+		}
+
+		Result<void> append_path(Array<GridPosition>& route, const Path& path, bool skip_first) {
+			usize start = skip_first ? 1 : 0;
+			for (usize i = start; i < path.size(); i++) {
+				auto step = path.at(i);
+				if (!step) {
+					return Err(step.error().code(), step.error().message());
+				}
+				route.push_back(step.value());
+			}
+			return Ok();
+		}
+
+		Result<void> complete_execution(AppState& state, ExecutionSession& session) {
+			if (session.finished) {
+				return Ok();
+			}
+			auto moved = state.robots.return_robot_home(session.robot);
+			if (!moved) {
+				return moved;
+			}
+			auto status = state.robots.set_robot_status(session.robot, RobotStatus::AVAILABLE);
+			if (!status) {
+				return status;
+			}
+			auto completed = state.tasks.complete(session.task.id());
+			if (!completed) {
+				return completed;
+			}
+			session.finished = true;
+			state.os << strings::MSG_EXEC_COMPLETED << strings::NL;
+			return Ok();
+		}
+
+		Result<void> cancel_execution(AppState& state, ExecutionSession& session) {
+			if (session.finished) {
+				return Ok();
+			}
+			auto moved = state.robots.return_robot_home(session.robot);
+			if (!moved) {
+				return moved;
+			}
+			auto status = state.robots.set_robot_status(session.robot, RobotStatus::AVAILABLE);
+			if (!status) {
+				return status;
+			}
+			auto cancelled = state.tasks.cancel(session.task.id());
+			if (!cancelled) {
+				return cancelled;
+			}
+			session.finished = true;
+			session.cancelled = true;
+			state.os << strings::MSG_EXEC_CANCELLED << strings::NL;
+			return Ok();
+		}
+
+		Result<void> apply_current_robot_position(AppState& state, ExecutionSession& session) {
+			return state.robots.set_robot_position(session.robot, session.route.unchecked_at(session.current_index));
+		}
+
+		Result<void> advance_execution_step(AppState& state, ExecutionSession& session, bool print_step) {
+			if (session.finished) {
+				state.os << strings::MSG_EXEC_ALREADY_DONE << strings::NL;
+				return Ok();
+			}
+			if (session.current_index >= session.station_index) {
+				state.os << strings::MSG_EXEC_REACHED_STATION << strings::NL;
+				return complete_execution(state, session);
+			}
+			session.reverse_stack.push(session.route.unchecked_at(session.current_index));
+			session.current_index++;
+			auto moved = apply_current_robot_position(state, session);
+			if (!moved) {
+				return moved;
+			}
+			if (print_step) {
+				state.os << strings::MSG_EXEC_NEXT_STEP;
+				print_position(state.os, session.route.unchecked_at(session.current_index));
+				state.os << strings::NL;
+			}
+			if (session.current_index == session.pickup_index) {
+				state.os << strings::MSG_EXEC_REACHED_PICKUP << strings::NL;
+			}
+			if (session.current_index == session.dropoff_index) {
+				state.os << strings::MSG_EXEC_REACHED_DROPOFF << strings::NL;
+			}
+			if (session.current_index == session.station_index) {
+				state.os << strings::MSG_EXEC_REACHED_STATION << strings::NL;
+				return complete_execution(state, session);
+			}
+			return Ok();
+		}
+
+		Result<void> step_execution_back(AppState& state, ExecutionSession& session) {
+			if (session.finished) {
+				state.os << strings::MSG_EXEC_ALREADY_DONE << strings::NL;
+				return Ok();
+			}
+			if (session.reverse_stack.empty()) {
+				state.os << strings::MSG_EXEC_STACK_EMPTY << strings::NL;
+				return Ok();
+			}
+			auto previous = session.reverse_stack.pop();
+			if (!previous) {
+				return Err(previous.error().code(), previous.error().message());
+			}
+			if (session.current_index > 0) {
+				session.current_index--;
+			}
+			auto moved = state.robots.set_robot_position(session.robot, previous.value());
+			if (!moved) {
+				return moved;
+			}
+			state.os << strings::MSG_EXEC_STEP_BACK;
+			print_position(state.os, previous.value());
+			state.os << strings::NL;
+			return Ok();
+		}
+
+		Result<void> run_to_next_checkpoint(AppState& state, ExecutionSession& session) {
+			if (session.finished) {
+				state.os << strings::MSG_EXEC_ALREADY_DONE << strings::NL;
+				return Ok();
+			}
+			if (session.current_index >= session.station_index) {
+				state.os << strings::MSG_EXEC_REACHED_STATION << strings::NL;
+				return complete_execution(state, session);
+			}
+			usize target = next_checkpoint_index(session);
+			state.os << strings::MSG_EXEC_NEXT_CHECKPOINT << next_checkpoint_name(session) << strings::NL;
+			while (!session.finished && session.current_index < target) {
+				auto advanced = advance_execution_step(state, session, true);
+				if (!advanced) {
+					return advanced;
+				}
+			}
+			return Ok();
+		}
+
+		Result<ExecutionSession> create_execution_session(AppState& state, const Task& task) {
+			auto robot = state.robots.robot_by_id(task.assigned_robot());
+			if (!robot) {
+				return Err<ExecutionSession>(robot.error().code(), robot.error().message());
+			}
+			sp<Pathfinder> pathfinder = robot.value().pathfinder();
+			if (!pathfinder) {
+				pathfinder = std::make_shared<Pathfinder>(state.layout);
+				auto stored = state.robots.set_robot_pathfinder(robot.value().id(), pathfinder);
+				if (!stored) {
+					return Err<ExecutionSession>(stored.error().code(), stored.error().message());
+				}
+			}
+			pathfinder->set_layout(state.layout);
+
+			ExecutionSession session;
+			session.task = task;
+			session.robot = robot.value().id();
+			session.station = robot.value().home_position();
+			session.pickup = task.pickup();
+			session.dropoff = task.dropoff();
+
+			auto first = pathfinder->find_path(session.station, session.pickup);
+			if (!first) {
+				return Err<ExecutionSession>(first.error().code(), first.error().message());
+			}
+			auto second = pathfinder->find_path(session.pickup, session.dropoff);
+			if (!second) {
+				return Err<ExecutionSession>(second.error().code(), second.error().message());
+			}
+			auto third = pathfinder->find_path(session.dropoff, session.station);
+			if (!third) {
+				return Err<ExecutionSession>(third.error().code(), third.error().message());
+			}
+			session.station_to_pickup = first.value();
+			session.pickup_to_dropoff = second.value();
+			session.dropoff_to_station = third.value();
+
+			auto appended = append_path(session.route, session.station_to_pickup, false);
+			if (!appended) {
+				return Err<ExecutionSession>(appended.error().code(), appended.error().message());
+			}
+			session.pickup_index = session.route.size() - 1;
+			appended = append_path(session.route, session.pickup_to_dropoff, true);
+			if (!appended) {
+				return Err<ExecutionSession>(appended.error().code(), appended.error().message());
+			}
+			session.dropoff_index = session.route.size() - 1;
+			appended = append_path(session.route, session.dropoff_to_station, true);
+			if (!appended) {
+				return Err<ExecutionSession>(appended.error().code(), appended.error().message());
+			}
+			session.station_index = session.route.size() - 1;
+			auto positioned = apply_current_robot_position(state, session);
+			if (!positioned) {
+				return Err<ExecutionSession>(positioned.error().code(), positioned.error().message());
+			}
+			return Ok(session);
+		}
+
+		void print_execution_header(AppState& state, const ExecutionSession& session) {
+			print_menu_header(state, string(strings::MSG_EXEC_MENU));
+			state.os << strings::MSG_EXEC_TASK << session.task.id() << strings::TXT_SPACE
+							 << strings::MSG_EXEC_ROBOT << session.robot << strings::NL
+							 << strings::MSG_EXEC_CURRENT;
+			print_position(state.os, session.route.unchecked_at(session.current_index));
+			state.os << strings::TXT_SPACE << strings::MSG_EXEC_NEXT_CHECKPOINT
+							 << next_checkpoint_name(session) << strings::NL;
+			state.os << strings::MSG_SECTION_SEPARATOR << strings::NL;
+		}
+
+		Result<void> execution_menu(AppState& state, ExecutionSession& session) {
+			bool running = true;
+			while (running) {
+				print_execution_header(state, session);
+				state.os
+						<< strings::MSG_EXEC_OPTION_1 << strings::NL
+						<< strings::MSG_EXEC_OPTION_2 << strings::NL
+						<< strings::MSG_EXEC_OPTION_3 << strings::NL
+						<< strings::MSG_EXEC_OPTION_4 << strings::NL
+						<< strings::MSG_EXEC_OPTION_5 << strings::NL
+						<< strings::MSG_EXEC_OPTION_6 << strings::NL
+						<< strings::MSG_EXEC_OPTION_7 << strings::NL
+						<< strings::MSG_EXEC_OPTION_8 << strings::NL
+						<< strings::MSG_EXEC_OPTION_0 << strings::NL
+						<< strings::MSG_OPTION;
+				auto option = get_option(state.is);
+				if (!option) {
+					state.os << strings::MSG_ERROR_PREFIX << option.error().message() << strings::NL;
+					pause(state);
+					continue;
+				}
+				switch (option.value()) {
+				case 0:
+					if (session.finished) {
+						running = false;
+					}
+					else {
+						state.os << strings::MSG_EXEC_LEAVE_BLOCKED << strings::NL;
+						pause(state);
+					}
+					break;
+				case 1:
+					state.os << strings::MSG_EXEC_FULL_PATH << strings::NL;
+					print_route(state, session.route);
+					pause(state);
+					break;
+				case 2:
+					state.os << strings::MSG_EXEC_STATION_PICKUP_PATH << strings::NL;
+					print_path(state, session.station_to_pickup);
+					pause(state);
+					break;
+				case 3:
+					state.os << strings::MSG_EXEC_PICKUP_DROPOFF_PATH << strings::NL;
+					print_path(state, session.pickup_to_dropoff);
+					pause(state);
+					break;
+				case 4:
+					print_reverse_stack(state, session.reverse_stack);
+					pause(state);
+					break;
+				case 5: {
+					auto cancelled = cancel_execution(state, session);
+					if (!cancelled) {
+						state.os << strings::MSG_ERROR_PREFIX << cancelled.error().message() << strings::NL;
+					}
+					pause(state);
+					running = false;
+					break;
+				}
+				case 6: {
+					auto advanced = advance_execution_step(state, session, true);
+					if (!advanced) {
+						state.os << strings::MSG_ERROR_PREFIX << advanced.error().message() << strings::NL;
+					}
+					pause(state);
+					break;
+				}
+				case 7: {
+					auto backed = step_execution_back(state, session);
+					if (!backed) {
+						state.os << strings::MSG_ERROR_PREFIX << backed.error().message() << strings::NL;
+					}
+					pause(state);
+					break;
+				}
+				case 8: {
+					auto checkpoint = run_to_next_checkpoint(state, session);
+					if (!checkpoint) {
+						state.os << strings::MSG_ERROR_PREFIX << checkpoint.error().message() << strings::NL;
+					}
+					pause(state);
+					break;
+				}
+				default:
+					state.os << strings::MSG_INVALID_OPTION << strings::NL;
+					pause(state);
+					break;
+				}
+			}
+			return Ok();
 		}
 
 
@@ -676,12 +1070,19 @@ namespace dstr {
 					break;
 				case 1: {
 					auto item = read_u32(state, string(strings::MSG_ITEM_ID));
-					state.os << strings::MSG_INPUT_PICKUP << strings::NL;
-					auto pickup = read_position(state);
 					state.os << strings::MSG_INPUT_DROPOFF << strings::NL;
 					auto dropoff = read_position(state);
-					if (item && pickup && dropoff) {
-						Task task(state.next_task_id++, item.value(), pickup.value(), dropoff.value());
+					if (item && dropoff) {
+						auto entry = find_item_entry(state, item.value());
+						if (!entry) {
+							state.os << strings::MSG_ERROR_PREFIX << entry.error().message() << strings::NL;
+							pause(state);
+							break;
+						}
+						state.os << strings::MSG_TASK_PICKUP_FROM_ITEM;
+						print_position(state.os, entry.value().location);
+						state.os << strings::NL;
+						Task task(state.next_task_id++, item.value(), entry.value().location, dropoff.value());
 						print_result(state, state.tasks.enqueue(task));
 					}
 					break;
@@ -690,6 +1091,11 @@ namespace dstr {
 					list_tasks(state);
 					break;
 				case 3: {
+					if (state.tasks.pending_size() == 0) {
+						state.os << strings::MSG_NO_TASKS << strings::NL;
+						pause(state);
+						break;
+					}
 					auto robot = state.robots.assign_next();
 					if (!robot) {
 						state.os << strings::MSG_ERROR_PREFIX << robot.error().message() << strings::NL;
@@ -701,15 +1107,34 @@ namespace dstr {
 						print_task(state, assigned.value());
 					}
 					else {
+						state.robots.set_robot_status(robot.value(), RobotStatus::AVAILABLE);
 						state.os << strings::MSG_ERROR_PREFIX << assigned.error().message() << strings::NL;
 					}
 					pause(state);
 					break;
 				}
 				case 4: {
-					auto id = read_u32(state, string(strings::MSG_TASK_ID));
+					if (state.tasks.assigned_size() == 0) {
+						state.os << strings::MSG_NO_TASKS << strings::NL;
+						pause(state);
+						break;
+					}
+					list_task_section(state, string(strings::MSG_ASSIGNED_TASKS), state.tasks.assigned_size(), true, false);
+					auto id = read_u32(state, string(strings::MSG_INPUT_EXECUTE_TASK));
 					if (id) {
-						print_result(state, state.tasks.complete(id.value()));
+						auto task = state.tasks.assigned_by_id(id.value());
+						if (!task) {
+							state.os << strings::MSG_ERROR_PREFIX << task.error().message() << strings::NL;
+							pause(state);
+							break;
+						}
+						auto session = create_execution_session(state, task.value());
+						if (!session) {
+							state.os << strings::MSG_ERROR_PREFIX << session.error().message() << strings::NL;
+							pause(state);
+							break;
+						}
+						execution_menu(state, session.value());
 					}
 					break;
 				}

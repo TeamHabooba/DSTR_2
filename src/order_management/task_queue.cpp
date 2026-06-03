@@ -52,6 +52,27 @@ namespace dstr {
     return Err(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_TASK_ASSIGNED_NOT_FOUND));
   }
 
+  Result<void> TaskQueue::cancel(task_id id) {
+    for (usize i = 0; i < assigned_.size(); i++) {
+      if (assigned_.unchecked_at(i).id() == id) {
+        Task cancelled = assigned_.unchecked_at(i);
+        cancelled.cancel();
+        completed_.push_back(cancelled);
+        return assigned_.remove(i);
+      }
+    }
+    return Err(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_TASK_ASSIGNED_NOT_FOUND));
+  }
+
+  Result<Task> TaskQueue::assigned_by_id(task_id id) const {
+    for (usize i = 0; i < assigned_.size(); i++) {
+      if (assigned_.unchecked_at(i).id() == id) {
+        return Ok(assigned_.unchecked_at(i));
+      }
+    }
+    return Err<Task>(ErrorCode::INVALID_ARGUMENT, string(strings::ERR_TASK_ASSIGNED_NOT_FOUND));
+  }
+
   Result<Task> TaskQueue::pending_at(usize index) const {
     return pending_.at(index);
   }

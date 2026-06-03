@@ -26,6 +26,7 @@ This file contains compile-time string constants only. Other modules include the
 - (none declared in this file)
 
 ## Fields
+- `TXT_ARROW`: Shared route separator used when CLI prints path coordinates.
 - `CELL_SYM_EMPTY`: Internal state used by the file API or domain object.
 - `CELL_SYM_ROBOT`: Internal state used by the file API or domain object.
 - `CELL_SYM_OBSTACLE`: Internal state used by the file API or domain object.
@@ -56,9 +57,10 @@ This file contains compile-time string constants only. Other modules include the
 - `JSON_ARRAY_CLOSE_COMMA`: Internal state used by the file API or domain object.
 - `JSON_ARRAY_CLOSE`: Internal state used by the file API or domain object.
 - `JSON_CLOSE`: Internal state used by the file API or domain object.
+- `ERR_TASK_ITEM_NOT_FOUND`: Domain error used when task creation references an item id absent from the rebuilt inventory index.
 
 ## Functions And Methods
-- `SCSTR FMT_TIME_STRING = "%04u-%02u-%02u %02u:%02u:%02u.%03u.%03u%s (UTC%+03d:%02u)%s";`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- (none; constants only)
 
 ## Project Convention Compliance
 - Namespace: follows the project-wide dstr namespace convention.

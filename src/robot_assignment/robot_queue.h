@@ -35,8 +35,11 @@ namespace dstr {
 
     Result<void> enqueue(Robot robot);
     Result<robot_id> assign_next();
+    Result<Robot> robot_by_id(robot_id id) const;
     Result<void> set_robot_status(robot_id id, RobotStatus status);
+    Result<void> set_robot_position(robot_id id, GridPosition position);
     Result<void> set_robot_pathfinder(robot_id id, sp<Pathfinder> pathfinder);
+    Result<void> return_robot_home(robot_id id);
     void clear();
   };
  

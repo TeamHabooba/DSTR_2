@@ -23,7 +23,7 @@ Header file: declares public API, types, aliases, constants, or inline template 
 - `dstr`
 
 ## How It Works
-Queue stores values in an Array and uses front_ as a logical offset. Dequeue advances front_ and compacts the remaining values only after enough consumed elements accumulate.
+TaskQueue separates lifecycle buckets. Pending tasks are stored in the project FIFO Queue, assigned tasks are stored in an Array for id-based lookup during execution, and completed history is stored in another Array. Assignment dequeues one pending task and stamps the robot id; completion and cancellation remove an assigned task and append a completed-history record with the final status.
 
 ## Types, Structs, Enums, And Aliases
 - `class TaskQueue`: Task workflow container with pending FIFO queue plus assigned and completed arrays.
@@ -43,7 +43,9 @@ Queue stores values in an Array and uses front_ as a logical offset. Dequeue adv
 - `Result<void> add_assigned(Task task);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 - `Result<void> add_completed(Task task);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 - `Result<Task> assign_next(robot_id robot);`: Moves the next available value through the queue workflow while preserving Result-based error reporting.
-- `Result<void> complete(task_id id);`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- `Result<void> complete(task_id id);`: Finds an assigned task by id, marks it COMPLETED, appends it to history, and removes it from the assigned Array.
+- `Result<void> cancel(task_id id);`: Finds an assigned task by id, marks it CANCELLED, appends it to history, and removes it from the assigned Array.
+- `Result<Task> assigned_by_id(task_id id) const;`: Linearly scans assigned tasks and returns a copy used by the CLI execution menu.
 - `Result<Task> pending_at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 - `Result<Task> assigned_at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
 - `Result<Task> completed_at(usize index) const;`: Participates in the file API using project aliases and Result-based control flow where failures are possible.

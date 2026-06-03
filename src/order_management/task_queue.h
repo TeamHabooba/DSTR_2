@@ -37,6 +37,8 @@ namespace dstr {
     Result<void> add_completed(Task task);
     Result<Task> assign_next(robot_id robot);
     Result<void> complete(task_id id);
+    Result<void> cancel(task_id id);
+    Result<Task> assigned_by_id(task_id id) const;
     Result<Task> pending_at(usize index) const;
     Result<Task> assigned_at(usize index) const;
     Result<Task> completed_at(usize index) const;

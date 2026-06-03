@@ -14,6 +14,7 @@ SCSTR TXT_SPACE = " ";
 SCSTR TXT_COMMA = ",";
 SCSTR TXT_LEFT_BRACKET = "[";
 SCSTR TXT_RIGHT_BRACKET_SPACE = "] ";
+SCSTR TXT_ARROW = " -> ";
 SCSTR TXT_TRUE = "true";
 SCSTR TXT_FALSE = "false";
 
@@ -68,6 +69,7 @@ SCSTR ERR_CELL_NULL = "Cell pointer is null";
 SCSTR ERR_TASK_ASSIGNED_NOT_FOUND = "Assigned task was not found";
 SCSTR ERR_TASK_ASSIGNED_INDEX = "Assigned task index is out of range";
 SCSTR ERR_TASK_COMPLETED_INDEX = "Completed task index is out of range";
+SCSTR ERR_TASK_ITEM_NOT_FOUND = "Task item was not found in inventory";
 SCSTR ERR_ROBOTS_EMPTY = "No robots in the system";
 SCSTR ERR_ROBOTS_UNAVAILABLE = "No available robots available";
 SCSTR ERR_ROBOT_NOT_FOUND = "Robot was not found";
@@ -90,26 +92,33 @@ SCSTR ERR_FILE_LAYOUT_DIMENSIONS = "Layout dimensions are invalid";
 SCSTR CSV_ROBOTS_HEADER = "id,status,row,col,home_row,home_col,tasks\n";
 SCSTR CSV_TASKS_HEADER = "id,item,robot,pickup_row,pickup_col,dropoff_row,dropoff_col,status\n";
 SCSTR CSV_ITEMS_HEADER = "row,col,storage,item,name,description,quantity\n";
+
 SCSTR JSON_LAYOUT_ROWS = "\"layout_rows\"";
 SCSTR JSON_LAYOUT_COLS = "\"layout_cols\"";
+
 SCSTR JSON_LAYOUT_CSV = "\"layout_csv\"";
 SCSTR JSON_ROBOTS_CSV = "\"robots_csv\"";
 SCSTR JSON_TASKS_CSV = "\"tasks_csv\"";
 SCSTR JSON_ITEMS_CSV = "\"items_csv\"";
+
 SCSTR JSON_SECTION_LAYOUT = "layout";
 SCSTR JSON_SECTION_ROBOTS = "robots";
 SCSTR JSON_SECTION_TASKS = "tasks";
 SCSTR JSON_SECTION_ITEMS = "items";
-SCSTR JSON_OPEN = "{\n";
+
+
 SCSTR JSON_LAYOUT_ROWS_LINE = "  \"layout_rows\": ";
 SCSTR JSON_LAYOUT_COLS_LINE = "  \"layout_cols\": ";
 SCSTR JSON_LAYOUT_CSV_OPEN = "  \"layout_csv\": [\n";
 SCSTR JSON_ROBOTS_CSV_OPEN = "  \"robots_csv\": [\n";
 SCSTR JSON_TASKS_CSV_OPEN = "  \"tasks_csv\": [\n";
 SCSTR JSON_ITEMS_CSV_OPEN = "  \"items_csv\": [\n";
+
+SCSTR JSON_OPEN = "{\n";
 SCSTR JSON_ARRAY_CLOSE_COMMA = "  ],\n";
 SCSTR JSON_ARRAY_CLOSE = "  ]\n";
 SCSTR JSON_CLOSE = "}\n";
+
 SCSTR JSON_ROW_PREFIX = "    \"";
 SCSTR JSON_ROW_SUFFIX = "\"";
 

@@ -20,17 +20,21 @@ Header file: declares public API, types, aliases, constants, or inline template 
 - `dstr`
 
 ## How It Works
-The CLI keeps the AreaLayout visible above menus, reads numbered options, validates input with Result, mutates AppState, then pauses before redraw so output remains visible after screen clearing.
+This file contains compile-time CLI text constants only. The CLI includes these constants for all visible menu labels, prompts, execution controls, guide text, and credits so user-facing text stays centralized outside implementation logic.
 
 ## Types, Structs, Enums, And Aliases
 - (none declared in this file)
 
 ## Fields
-- `NL`: Internal state used by the file API or domain object.
+- `NL`: Shared newline token for CLI output.
+- `MSG_TASK_OPTION_1` / `MSG_TASK_OPTION_4`: Task menu labels updated for item-id task creation and assigned-task execution.
+- `MSG_INPUT_EXECUTE_TASK`: Prompt used before starting an execution session for an assigned task.
+- `MSG_TASK_PICKUP_FROM_ITEM`: Result text showing that pickup was derived from the item's storage location.
+- `MSG_EXEC_*`: Execution menu labels, checkpoint names, path/stack headings, step messages, completion/cancellation messages, and blocked-exit warning.
+- `MSG_GUIDE_2`: User manual task section updated to describe step-by-step execution with path tracking.
 
 ## Functions And Methods
-- `SCSTR MSG_INPUT_STATUS = "Status (1 available, 2 busy, 3 maintenance): ";`: Returns stored state directly without extra allocation or ownership transfer.
-- `SCSTR MSG_DESC_MEMBERS = "Group members are:\nTP081705 - Kurapatkin Aliaksandr (Alex) (Leader)\nTP082557 - Leon Frank Aminiel (Leo)\nTP082459 - Mohamed Abdif...`: Participates in the file API using project aliases and Result-based control flow where failures are possible.
+- (none; constants only)
 
 ## Project Convention Compliance
 - Namespace: follows the project-wide dstr namespace convention.
