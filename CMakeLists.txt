@@ -16,26 +16,6 @@ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 
 # All executables as a list
 set(SOURCES
-  "${SRC_DIR}/common/array/array.cpp"
-  "${SRC_DIR}/common/graph/graph.cpp"
-  "${SRC_DIR}/common/position.cpp"
-  "${SRC_DIR}/common/cell/cell.cpp"
-  "${SRC_DIR}/common/item/item.cpp"
-  "${SRC_DIR}/common/storage/storage.cpp"
-  "${SRC_DIR}/common/robot/robot.cpp"
-
-  "${SRC_DIR}/files/files.cpp"
-  "${SRC_DIR}/cli/cli.cpp"
-
-  "${SRC_DIR}/area_layout/area_layout.cpp"
-
-  "${SRC_DIR}/robot_assignment/robot_queue.cpp"
-
-  "${SRC_DIR}/order_management/task.cpp"
-  "${SRC_DIR}/order_management/task_queue.cpp"
-
-  "${SRC_DIR}/robot_navigation/path.cpp"
-  "${SRC_DIR}/robot_navigation/pathfinder.cpp"
 
   "${SRC_DIR}/Source.cpp"
 
